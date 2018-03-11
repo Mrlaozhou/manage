@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 
 class Handler extends ExceptionHandler
 {
@@ -48,6 +49,29 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // 接口异常
+        if( $exception instanceof ApiException)
+        {
+            $result = [
+                'code'      =>  4901,
+                'massage'   =>  $exception->getMessage(),
+                'data'      =>  '',
+            ];
+            return response()->json($result);
+        }
+        // 验证异常
+        if( $exception instanceof ValidationException && $request->isXmlHttpRequest())
+        {
+            $errors = array_values( $exception->errors() );
+            $error = $errors[0][0];
+            return response()->json([
+                'code'      =>  4902,
+                'message'   =>  '',
+                'error'     =>  $error,
+                'data'      =>  '',
+            ]);
+        }
+
         return parent::render($request, $exception);
     }
 }

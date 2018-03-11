@@ -30,5 +30,15 @@ Route::get('privilege/index','PrivilegeController@index');
 Route::get('privilege/create','PrivilegeController@create');
 Route::get('privilege/update','PrivilegeController@update');
 Route::get('privilege/delete','PrivilegeController@delete');
+// 角色
+Route::get('role/index','RoleController@index');
+Route::get('role/create','RoleController@create');
+Route::get('role/update','RoleController@update');
+Route::get('role/delete','RoleController@delete');
+// 用户
+Route::get('admin/index','AdminController@index');
+Route::get('admin/create','AdminController@create');
+Route::get('admin/update/{uuid}','AdminController@update');
+Route::get('admin/delete','dminController@delete');
 
 Route::get('test','TestController@index');

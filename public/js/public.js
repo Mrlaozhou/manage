@@ -137,18 +137,14 @@ layui.use(['form','element','jquery'], function() {
     h       弹出层高度（缺省调默认值）
 */
 function openLayer(title,url,w,h){
-    if (title == null || title == '') {
-        title=false;
-    };
-    if (url == null || url == '') {
-        url="404.html";
-    };
-    if (w == null || w == '') {
-        w=($(window).width()*0.9);
-    };
-    if (h == null || h == '') {
-        h=($(window).height() - 50);
-    };
+    if (title == null || title == '') title=false;
+
+    if (url == null || url == '') url="404.html";
+
+    if (w == null || w == '') w=($(window).width()*0.9);
+
+    if (h == null || h == '') h=($(window).height() - 50);
+
     layer.open({
         type: 2,
         area: [w+'px', h +'px'],
@@ -167,5 +163,14 @@ function closeLayer(){
     parent.layer.close(index);
 }
 
-console.log(layui);
-
+function timestampToTime(timestamp)
+{
+    var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    Y = date.getFullYear() + '-';
+    M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    D = date.getDate() + ' ';
+    h = date.getHours() + ':';
+    m = date.getMinutes() + ':';
+    s = date.getSeconds();
+    return Y+M+D+h+m+s;
+}
