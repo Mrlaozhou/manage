@@ -13,10 +13,10 @@
                        autocomplete="off" class="layui-input">
             </div>
             <div class="layui-input-inline">
-                <button class="layui-btn" lay-submit lay-filter="search">立即提交</button>
+                <button class="layui-btn" lay-submit lay-filter="search">搜索</button>
             </div>
             <div class="layui-input-inline x-box-add-btn">
-                <button type="button" class="layui-btn" onclick="openLayer('添加管理员','{{ url('admin/create') }}')"><i class="layui-icon">&#xe61f;</i>添加用户</button>
+                <button type="button" class="layui-btn" onclick="openLayer('添加用户','{{ url('admin/create') }}')"><i class="layui-icon">&#xe61f;</i>添加用户</button>
             </div>
         </div>
     </form>
@@ -48,9 +48,9 @@
                 {field: 'username', title: '用户名', width:'8%'}
                 ,{field: 'issalt', title: '是否加盐', width:'6%', templet:'#issalt'}
                 ,{field: 'createdby', title: '创建者', width:'7%'}
-                ,{field: 'createdtime', title: '创建时间', width:'11%',templet: '#createdtime'}
+                ,{field: 'createdtime', title: '创建时间', width:'11%',sort:true,templet: '#createdtime'}
                 ,{field: 'updatedby', title: '更新者', width:'7%'}
-                ,{field: 'updatedtime', title: '更新时间', width:'11%',templet: '#updatedtime'}
+                ,{field: 'updatedtime', title: '更新时间', width:'11%',sort:true,templet: '#updatedtime'}
                 ,{field: 'status', title: '状态', width:'5%',templet:'#status'}
                 ,{field: 'email', title: '邮件', width:'10%'}
                 ,{field: 'phone', title: '电话', width:'10%'}

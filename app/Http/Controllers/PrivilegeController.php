@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Mode;
 use Illuminate\Http\Request;
 
 class PrivilegeController extends Controller
@@ -14,9 +15,11 @@ class PrivilegeController extends Controller
 
     public function create (Request $request)
     {
+        $modes = Mode::where('status','=','1')->get();
+
         return view('privilege.create',[
-            'info'      =>  [],
-            'modes'     =>  [['id'=>1,'name'=>'无限制']],
+            'handle'        =>      'create',
+            'modes'         =>      $modes,
         ]);
     }
 }

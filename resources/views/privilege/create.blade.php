@@ -11,6 +11,27 @@
     </ul>
     <form class="layui-form layui-tab-content">
         <div class="layui-tab-item layui-show">
+            {{-- pid --}}
+            <div class="layui-form-item">
+                <label class="layui-form-label">父级元素</label>
+                <div class="layui-input-inline">
+                    <select name="pid" lay-verify="required" class="vaild">
+                        <option>请选择</option>
+                        <option value="0">顶级权限</option>
+                        @isset( $privileges )
+                            @foreach( $privileges as $key => $v )
+                                <option
+                                        @isset( $info['pid'] )
+                                                @if( $info['pid'] == $v['id'] )
+                                                    selected
+                                                @endif
+                                        @endisset
+                                        value="{{ $v['uuid'] }}">{{ $v['name'] }}</option>
+                            @endforeach
+                        @endisset
+                    </select>
+                </div>
+            </div>
             {{-- name --}}
             <div class="layui-form-item">
                 <label class="layui-form-label">权限名称</label>
@@ -50,7 +71,7 @@
                 <label class="layui-form-label">验证模式</label>
                 <div class="layui-input-block">
                     @foreach ( $modes as $mode )
-                        <input type="radio" name="mode" value="{{ $mode['id'] }}" title="{{ $mode['name'] }}"
+                        <input type="radio" name="mode" value="{{ $mode['uuid'] }}" title="{{ $mode['name'] }}"
                             @if( isset($info['mode']) && $info['mode'] == $mode['id'] )
                                 checked
                                @endif

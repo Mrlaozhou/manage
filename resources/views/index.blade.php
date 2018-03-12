@@ -46,7 +46,12 @@
                         <i class="layui-icon nav_right">&#xe603;</i>
                     </a>
                     <ul class="sub-menu">
-
+                        <li>
+                            <a _href="{{ url('privilege/index') }}">
+                                <i class="layui-icon">&#xe602;</i>
+                                <cite>权限列表</cite>
+                            </a>
+                        </li >
                         <li>
                             <a _href="{{ url('mode/index') }}">
                                 <i class="layui-icon">&#xe602;</i>

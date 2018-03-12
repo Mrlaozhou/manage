@@ -23,9 +23,14 @@ class ModeController extends Controller
         ]);
     }
 
-    public function update (Request $request)
+    public function update (Request $request,$uuid)
     {
-        return view('mode.create');
+        $modeModel = new Mode();
+        $info = $modeModel::find($uuid)->toArray();
+        return view('mode.create',[
+            'handle'        =>      'update',
+            'info'          =>      $info,
+        ]);
     }
 
     public function delete (Request $request){}

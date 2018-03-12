@@ -48,9 +48,9 @@
                 {field: 'name', title: '名称', width:'10%'}
                 ,{field: 'uuid', title: 'UUID', width:'10%'}
                 ,{field: 'createdby', title: '创建者', width:'13%'}
-                ,{field: 'createdtime', title: '创建时间', width:'15%',templet: '#createdtime'}
+                ,{field: 'createdtime', title: '创建时间',sort:true, width:'15%',templet: '#createdtime'}
                 ,{field: 'updatedby', title: '更新者', width:'13%'}
-                ,{field: 'updatedtime', title: '更新时间', width:'15%',templet: '#updatedtime'}
+                ,{field: 'updatedtime', title: '更新时间',sort:true, width:'15%',templet: '#updatedtime'}
                 ,{field: 'status', title: '状态', width:'5%',templet:'#status'}
                 ,{ title: '操作', width:'',toolbar:'#bar',fixed: 'right'}
             ]]
