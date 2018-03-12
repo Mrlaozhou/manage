@@ -46,34 +46,17 @@
                         <i class="layui-icon nav_right">&#xe603;</i>
                     </a>
                     <ul class="sub-menu">
+
                         <li>
-                            <a _href="{{ url('privilege/index') }}">
+                            <a _href="{{ url('mode/index') }}">
                                 <i class="layui-icon">&#xe602;</i>
-                                <cite>权限列表</cite>
-                            </a>
-                        </li >
-                        <li>
-                            <a _href="{{ url('privilege/create') }}">
-                                <i class="layui-icon">&#xe602;</i>
-                                <cite>添加权限</cite>
-                            </a>
-                        </li >
-                        <li>
-                            <a _href="{{ url('mode/create') }}">
-                                <i class="layui-icon">&#xe602;</i>
-                                <cite>添加模式</cite>
+                                <cite>模式列表</cite>
                             </a>
                         </li >
                         <li>
                             <a _href="{{ url('admin/index') }}">
                                 <i class="layui-icon">&#xe602;</i>
                                 <cite>管理员列表</cite>
-                            </a>
-                        </li >
-                        <li>
-                            <a _href="{{ url('admin/create') }}">
-                                <i class="layui-icon">&#xe602;</i>
-                                <cite>添加用户</cite>
                             </a>
                         </li >
                     </ul>

@@ -11,14 +11,11 @@ class Mode extends Base
     protected $table = 'mode';
 
     protected $guarded = [
-        'username','password','salt'
+
     ];
 
     public function createMode($data)
     {
-        $data['uuid'] = Unique::getUUID();
-        $data['createdby'] = '';
-        $data['createdtime'] = time();
-        return $this->save($data);
+        return static::create($data);
     }
 }

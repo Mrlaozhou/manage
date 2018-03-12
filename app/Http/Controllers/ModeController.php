@@ -11,12 +11,15 @@ use Illuminate\Validation\Validator;
 class ModeController extends Controller
 {
     //
-    public function index (Request $request){}
+    public function index (Request $request)
+    {
+        return view('mode.index');
+    }
 
     public function create (Request $request)
     {
         return view('mode.create',[
-
+            'handle'    =>  'create',
         ]);
     }
 

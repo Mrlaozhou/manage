@@ -10,7 +10,7 @@ class Admin extends Base
     {
         //
         $adminModel = new AdminModel();
-        $data = $adminModel::where('status','=','1')->get();
+        $data = $adminModel::where('status','<>','-7')->get();
 
         return ['code'=>0,'msg'=>'','data'=>$data,'count'=>1];
     }

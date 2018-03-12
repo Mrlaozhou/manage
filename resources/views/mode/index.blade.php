@@ -9,14 +9,14 @@
     <form class="layui-form x-search">
         <div class="layui-form-item">
             <div class="layui-input-inline">
-                <input type="text" name="username" lay-verify="required" placeholder="输入用户名后点击搜索"
+                <input type="text" name="username" lay-verify="required" placeholder="输入后点击搜索"
                        autocomplete="off" class="layui-input">
             </div>
             <div class="layui-input-inline">
-                <button class="layui-btn" lay-submit lay-filter="search">立即提交</button>
+                <button class="layui-btn" lay-submit lay-filter="search">搜索</button>
             </div>
             <div class="layui-input-inline x-box-add-btn">
-                <button type="button" class="layui-btn" onclick="openLayer('添加管理员','{{ url('admin/create') }}')"><i class="layui-icon">&#xe61f;</i>添加用户</button>
+                <button type="button" class="layui-btn" onclick="openLayer('添加模式','{{ url('mode/create') }}')"><i class="layui-icon">&#xe61f;</i>添加模式</button>
             </div>
         </div>
     </form>
@@ -38,22 +38,20 @@
             elem: '#dataList'
             // ,width:'100%'
             ,height: 450
-            ,url: '{{ route('api.admin.index') }}' //数据接口
+            ,url: '{{ route('api.mode.index') }}' //数据接口
             ,page: true //开启分页
             ,limit: 10
             ,method: 'post'
             ,loading: true
-            ,id: 'adminTable'
+            ,id: 'modeTable'
             ,cols: [[ //表头
-                {field: 'username', title: '用户名', width:'8%'}
-                ,{field: 'issalt', title: '是否加盐', width:'6%', templet:'#issalt'}
-                ,{field: 'createdby', title: '创建者', width:'7%'}
-                ,{field: 'createdtime', title: '创建时间', width:'11%',templet: '#createdtime'}
-                ,{field: 'updatedby', title: '更新者', width:'7%'}
-                ,{field: 'updatedtime', title: '更新时间', width:'11%',templet: '#updatedtime'}
+                {field: 'name', title: '名称', width:'10%'}
+                ,{field: 'uuid', title: 'UUID', width:'10%'}
+                ,{field: 'createdby', title: '创建者', width:'13%'}
+                ,{field: 'createdtime', title: '创建时间', width:'15%',templet: '#createdtime'}
+                ,{field: 'updatedby', title: '更新者', width:'13%'}
+                ,{field: 'updatedtime', title: '更新时间', width:'15%',templet: '#updatedtime'}
                 ,{field: 'status', title: '状态', width:'5%',templet:'#status'}
-                ,{field: 'email', title: '邮件', width:'10%'}
-                ,{field: 'phone', title: '电话', width:'10%'}
                 ,{ title: '操作', width:'',toolbar:'#bar',fixed: 'right'}
             ]]
             ,done:function (obj) {
@@ -73,7 +71,7 @@
 //                    layer.clone(index);
                 } );
             }else if( curr == 'edit' ){
-                openLayer('编辑-'+data.name,'{{ url('admin/update') }}'+'/'+data.uuid);
+                openLayer('编辑-'+data.name,'{{ url('mode/update') }}'+'/'+data.uuid);
             }else{
                 layer.msg('show:'+data.uuid);
             }
@@ -81,7 +79,7 @@
 
         form.on('submit(search)',function (obj) {
             var where = obj.field;
-            table.reload('adminTable',{
+            table.reload('modeTable',{
                 where:where
             });
             return false;

@@ -29,9 +29,11 @@ class AdminController extends Controller
 
     public function update (Request $request,$uuid)
     {
-        dump($uuid);
+        $adminModel = new Admin();
+        $info = $adminModel::find($uuid)->toArray();
         return view('admin.create',[
-            'handle'    =>  'update'
+            'handle'    =>  'update',
+            'info'      =>  $info,
         ]);
     }
 }

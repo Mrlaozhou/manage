@@ -92,7 +92,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">介绍</label>
                 <div class="layui-input-block" style="width:30%;">
-                    <textarea name="intro" placeholder="请输入介绍" class="layui-textarea">{{ $info['desc'] or '' }}</textarea>
+                    <textarea name="intro" placeholder="请输入介绍" class="layui-textarea">{{ $info['intro'] or '' }}</textarea>
                 </div>
             </div>
             {{-- avatar --}}

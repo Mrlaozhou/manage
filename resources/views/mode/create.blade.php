@@ -62,7 +62,7 @@
                     <input type="hidden" name="uuid" name="{{ $info['uuid'] }}">
                 @endisset
 
-                <button class="layui-btn" url="{{ route('api.mode.create') }}" lay-submit lay-filter="create">立即提交</button>
+                <button class="layui-btn" api="{{ route('api.mode.create') }}" lay-submit lay-filter="{{ $handle }}">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>

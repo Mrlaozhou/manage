@@ -26,10 +26,16 @@ layui.use( ['jquery','element','form','layer','upload'], function () {
             if( value != '' && !this.phone[0].test(value) )
                 return this.phone[1];
         },
+        emptyOrPassword:function (value) {
+            var reg = /^[a-zA-z]{1}[~@#$%^&*()_+<>:{}a-zA-Z0-9]{7,20}$/i;
+            if( value != '' && !reg.test(value) )
+                return '密码为字母开头的8到20位~@#$%^&*()_+<>:{}a-zA-Z0-9';
+        },
         enum:function(value){
             if( !$.inArray(value,['1','0','-7','9']) )
                 return '列举值有误';
-        }
+        },
+
     });
     //头像上传
     upload.render({
