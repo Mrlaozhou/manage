@@ -24,6 +24,7 @@ Route::post('/role/create', 'Role@create')->name('api.role.create');
 // privilege
 Route::post('/privilege/create', 'Privilege@create')->name('api.privilege.create');
 Route::post('/privilege/index', 'Privilege@index')->name('api.privilege.index');
+Route::post('/privilege/update', 'Privilege@update')->name('api.privilege.update');
 
 // mode
 Route::post('/mode/index','Mode@index')->name('api.mode.index');

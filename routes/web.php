@@ -28,12 +28,12 @@ Route::get('mode/delete','ModeController@delete');
 // 权限
 Route::get('privilege/index','PrivilegeController@index');
 Route::get('privilege/create','PrivilegeController@create');
-Route::get('privilege/update/:uuid','PrivilegeController@update');
+Route::get('privilege/update/{uuid}','PrivilegeController@update');
 Route::get('privilege/delete','PrivilegeController@delete');
 // 角色
 Route::get('role/index','RoleController@index');
 Route::get('role/create','RoleController@create');
-Route::get('role/update','RoleController@update');
+Route::get('role/update/{uuid}','RoleController@update');
 Route::get('role/delete','RoleController@delete');
 // 用户
 Route::get('admin/index','AdminController@index');

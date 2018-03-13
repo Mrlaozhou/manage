@@ -37,24 +37,24 @@
         table.render({
             elem: '#dataList'
             // ,width:'100%'
-            ,height: 450
+            ,height: 500
             ,url: '{{ route('api.privilege.index') }}' //数据接口
             ,page: true //开启分页
-            ,limit: 10
+            ,limit: 20
             ,method: 'post'
             ,loading: true
             ,id: 'privilegeTable'
             ,cols: [[ //表头
                 {field: 'name', title: '名称', width:'8%'}
-                ,{field: 'route', title: '路由', width:'6%'}
-                ,{field: 'alias', title: '别名', width:'6%'}
+                ,{field: 'route', title: '路由', width:'15%'}
                 ,{field: 'createdby', title: '创建者', width:'7%'}
                 ,{field: 'createdtime', title: '创建时间',sort:true, width:'11%',templet: '#createdtime'}
                 ,{field: 'updatedby', title: '更新者', width:'7%'}
                 ,{field: 'updatedtime', title: '更新时间',sort:true, width:'11%',templet: '#updatedtime'}
                 ,{field: 'status', title: '状态',sort:true, width:'7%',templet:'#status'}
                 ,{field: 'mode', title: '模式', width:'7%'}
-                ,{field: 'type', title: '类型',sort:true, width:'7%',templet: '#type'}
+                ,{field: 'type', title: '类型',sort:true, width:'5%',templet: '#type'}
+                ,{field: 'is_back', title: '后台显示', width:'7%',sort:true,templet: '#is_back'}
                 ,{ title: '操作', width:'',toolbar:'#bar',fixed: 'right'}
             ]]
             ,done:function (obj) {
@@ -109,9 +109,17 @@
 {{-- type --}}
 <script type="text/html" id="type">
     @{{#  if(d.type == '9'){ }}
-    <span class="layui-badge">web</span>
+    <span class="layui-badge">api</span>
     @{{#  } else { }}
-    <span class="layui-badge layui-bg-gray">api</span>
+    <span class="layui-badge layui-bg-gray">web</span>
+    @{{#  } }}
+</script>
+{{-- is_back --}}
+<script type="text/html" id="is_back">
+    @{{#  if(d.is_back == '1'){ }}
+    <span class="layui-badge">是</span>
+    @{{#  } else { }}
+    <span class="layui-badge layui-bg-gray">否</span>
     @{{#  } }}
 </script>
 <script  type="text/html" id="createdtime">

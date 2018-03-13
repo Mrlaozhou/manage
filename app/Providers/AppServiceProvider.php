@@ -17,6 +17,10 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('phone', function($attribute, $value, $parameters, $validator) {
             return preg_match('/^1[34578]{1}[0-9]{9}$/',$value);
         });
+
+        Validator::extend('uuid', function($attribute, $value, $parameters, $validator) {
+            return preg_match('/^[A-Z0-9]{32}$/',$value);
+        });
     }
 
     /**

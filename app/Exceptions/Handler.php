@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler
         {
             $result = [
                 'code'      =>  4901,
-                'massage'   =>  $exception->getMessage(),
+                'error'   =>  $exception->getMessage(),
                 'data'      =>  '',
             ];
             return response()->json($result);

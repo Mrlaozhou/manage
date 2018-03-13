@@ -25,8 +25,7 @@ class ModeController extends Controller
 
     public function update (Request $request,$uuid)
     {
-        $modeModel = new Mode();
-        $info = $modeModel::find($uuid)->toArray();
+        $info = DB::table('mode')->where('uuid',$uuid)->first();
         return view('mode.create',[
             'handle'        =>      'update',
             'info'          =>      $info,

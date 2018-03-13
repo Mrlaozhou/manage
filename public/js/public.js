@@ -92,7 +92,7 @@ layui.use(['form','element','jquery'], function() {
             if($(this).children('.sub-menu').length){
                 if($(this).hasClass('open')){
                     $(this).removeClass('open');
-                    $(this).find('.nav_right').html('&#xe697;');
+                    $(this).find('.nav_right').html('&#xe603;');
                     $(this).children('.sub-menu').stop().slideUp();
                     $(this).siblings().children('.sub-menu').slideUp();
                 }else{
