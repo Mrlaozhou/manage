@@ -17,9 +17,14 @@ use Illuminate\Http\Request;
 // admin
 Route::post('/admin/create', 'Admin@create')->name('api.admin.create');
 Route::post('/admin/index', 'Admin@index')->name('api.admin.index');
+Route::post('/admin/update', 'Admin@update')->name('api.admin.update');
+Route::post('/admin/delete', 'Admin@delete')->name('api.admin.delete');
 
 // role
+Route::post('/role/index', 'Role@index')->name('api.role.index');
 Route::post('/role/create', 'Role@create')->name('api.role.create');
+Route::post('/role/delete', 'Role@delete')->name('api.role.delete');
+Route::post('/role/update', 'Role@update')->name('api.role.update');
 
 // privilege
 Route::post('/privilege/create', 'Privilege@create')->name('api.privilege.create');

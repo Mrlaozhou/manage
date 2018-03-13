@@ -38,35 +38,25 @@
 <div class="left-nav">
     <div id="side-nav">
         <ul id="nav">
-            <foreach name="btns" item="v" >
+            @foreach( $pris as $key => $item )
                 <li>
                     <a href="javascript:;">
                         <i class="layui-icon">&#xe612;</i>
-                        <cite>RBAC</cite>
+                        <cite>{{ $item->name }}</cite>
                         <i class="layui-icon nav_right">&#xe603;</i>
                     </a>
                     <ul class="sub-menu">
+                    @foreach( $item->son as $k => $v )
                         <li>
-                            <a _href="{{ url('privilege/index') }}">
+                            <a _href="{{ url(str_replace('-','/',$v->route)) }}">
                                 <i class="layui-icon">&#xe602;</i>
-                                <cite>权限列表</cite>
+                                <cite>{{ $v->name }}</cite>
                             </a>
                         </li >
-                        <li>
-                            <a _href="{{ url('mode/index') }}">
-                                <i class="layui-icon">&#xe602;</i>
-                                <cite>模式列表</cite>
-                            </a>
-                        </li >
-                        <li>
-                            <a _href="{{ url('admin/index') }}">
-                                <i class="layui-icon">&#xe602;</i>
-                                <cite>管理员列表</cite>
-                            </a>
-                        </li >
+                    @endforeach
                     </ul>
                 </li>
-            </foreach>
+            @endforeach
         </ul>
     </div>
 </div>
