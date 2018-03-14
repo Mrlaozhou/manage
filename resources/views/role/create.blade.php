@@ -58,12 +58,21 @@
                 <label class="layui-form-label">权限列表</label>
                 <div class="layui-input-block" style="width:80%;">
                     <table class="layui-table">
+
                         <tbody>
                         @foreach( $privileges as $key => $item )
                             <tr>
-                                <td>{{ $item->name }}</td>
+                                <td><input type="checkbox" lay-skin="primary" lay-filter="chooseLine" value="{{ $item->uuid }}" name="puuids[]"
+                                           @if( isset($existsPuuids) && in_array( $item->uuid, $existsPuuids ) )
+                                                   checked
+                                           @endif
+                                           title="{{ $item->name }}"></td>
                                 @foreach( $item->son as $k => $v )
-                                    <td><input type="checkbox" value="{{ $v->uuid }}" name="{{ $handle }}[puuids]" title="{{ $v->name }}"></td>
+                                    <td><input type="checkbox" lay-skin="primary" value="{{ $v->uuid }}" name="puuids[]"
+                                               @if( isset($existsPuuids) && in_array( $v->uuid, $existsPuuids ) )
+                                                    checked
+                                               @endif
+                                               title="{{ $v->name }}"></td>
                                 @endforeach
                             </tr>
                         @endforeach
@@ -76,7 +85,7 @@
         <div class="layui-form-item">
             <div class="layui-input-block">
                 @isset( $info->uuid )
-                    <input type="hidden" name="{{ $handle }}[uuid]" value="{{ $info->uuid or '' }}">
+                    <input type="hidden"  name="{{ $handle }}[uuid]" value="{{ $info->uuid or '' }}">
                 @endisset
             </div>
         </div>
@@ -99,28 +108,43 @@
         form.on( 'submit({{ $handle }})',function (obj) {
             var data        =   obj.field,
                 api         =   $(this).attr('api');
-            console.log(data);
-            // $.post( api, data, function (res) {
-            //     if( res.code == 2900 )
-            //     {
-            //         // layer.msg('Successfully');
-            //         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-            //         parent.layer.close(index);
-            //         parent.location.reload();
-            //         return ;
-            //     }
-            //     else
-            //     {
-            //         layer.open({
-            //             title : '错误提示',
-            //             type : 0,
-            //             content : res.error,
-            //         });
-            //     }
-            // }, 'JSON' );
+            $.post( api, data, function (res) {
+                 if( res.code == 2900 )
+                 {
+                     // layer.msg('Successfully');
+                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                     parent.layer.close(index);
+                     parent.location.reload();
+                     return ;
+                 }
+                 else
+                 {
+                     layer.open({
+                         title : '错误提示',
+                         type : 0,
+                         content : res.error,
+                     });
+                 }
+            }, 'JSON' );
 
             return false;
         } );
+
+        form.on( 'checkbox(chooseLine)', function(data){
+            var obj         =   data.othis,
+                status      =   data.elem.checked;
+            if( status == true ) {
+                $(obj).parent().parent().find('input[type="checkbox"]').attr('checked','true');
+                // layui-form-checked
+                $(obj).parent().parent().find('.layui-form-checkbox').addClass('layui-form-checked');
+            }else if( status == false ){
+                $(obj).parent().parent().find('input[type="checkbox"]').attr('checked','false');
+                // layui-form-checked
+                $(obj).parent().parent().find('.layui-form-checkbox').removeClass('layui-form-checked');
+            }
+        } );
+
+        form.render();
     } );
 </script>
 </body>

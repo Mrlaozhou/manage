@@ -88,6 +88,8 @@
             },'json');
             return false;
         } );
+
+        form.render();
     } );
 </script>
 </body>

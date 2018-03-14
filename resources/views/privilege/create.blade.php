@@ -105,18 +105,21 @@
 
                 </div>
             </div>
-            {{-- is_back --}}
+            {{-- style --}}
             <div class="layui-form-item">
-                <label class="layui-form-label">后台显示</label>
+                <label class="layui-form-label">显示方式</label>
                 <div class="layui-input-block">
-                    @if( isset($info->is_back) && $info->is_back == '0' )
-                        <input type="radio" name="{{ $handle }}[is_back]" value="1" title="是">
-                        <input type="radio" name="{{ $handle }}[is_back]" value="0" title="否" checked>
-                    @else
-                        <input type="radio" name="{{ $handle }}[is_back]" value="1" title="是" checked>
-                        <input type="radio" name="{{ $handle }}[is_back]" value="0" title="否">
-                    @endif
-
+                    @foreach( $_style as $key => $name )
+                        <input type="checkbox" value="{{ $key }}" name="{{ $handle }}[styles]['{{ $key }}']" title="{{ $name }}"
+                            @if( isset($info->styles) )
+                                    @if( in_array($key,$info->styles) )
+                                        checked
+                                    @endif
+                            @else
+                                checked
+                            @endif
+                        >
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -173,11 +176,12 @@
         form.on( 'submit({{ $handle }})',function (obj) {
             var data        =   obj.field,
                 api         =   $(this).attr('api');
-
+            console.log(data);
             $.post( api, data, function (res) {
                 if( res.code == 2900 )
                 {
                     // layer.msg('Successfully');
+                    console.log(res);
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                     parent.layer.close(index);
                     parent.location.reload();
@@ -195,6 +199,8 @@
 
             return false;
         } );
+
+        form.render();
     } );
 </script>
 </body>

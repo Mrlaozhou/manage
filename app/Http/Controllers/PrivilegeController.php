@@ -9,7 +9,7 @@ use DB;
 class PrivilegeController extends Controller
 {
     public static $allowFields = ['uuid','name','route','status','alias','createdby',
-        'createdtime','updatedby','updatedtime','module','controller','action','mode','pid','type'];
+        'createdtime','updatedby','updatedtime','module','controller','action','mode','pid','type','style'];
     //
     public function index (Request $request)
     {
@@ -26,18 +26,23 @@ class PrivilegeController extends Controller
         // 权限列表
         $privileges     =   Sorts( $this->privilegeList()->toArray(),true);
 
+        // 显示列表
+        $styles         =   self::$_octal;
+
         return view('privilege.create',[
             'handle'        =>      'create',
             'modes'         =>      $modes,
             'privileges'    =>      $privileges,
+            '_style'        =>      $styles,
         ]);
     }
 
     public function update (Request$request, $uuid)
     {
-        // TODO 获取当前权限数据、模式数据、权限列表、当前权限的下级权限
+        // TODO 获取当前权限数据、模式数据、权限列表、当前权限的下级权限,显示类型
         // 当前数据
         $info           =   DB::table('privilege')->where('uuid',$uuid)->first();
+        $info->styles   =   self::_octalMap($info->style);
         // 模式数据
         $modes          =   DB::table('mode')->select('uuid','name')->where('status','1')
             ->orderBy('createdtime')
@@ -49,6 +54,8 @@ class PrivilegeController extends Controller
             return $v->uuid;
         },$subItems);
         $subIds[]       =   $uuid;
+        // 显示列表
+        $styles         =   self::$_octal;
 
         return view('privilege.create',[
             'handle'        =>      'update',
@@ -56,6 +63,7 @@ class PrivilegeController extends Controller
             'modes'         =>      $modes,
             'privileges'    =>      $privileges,
             'subIds'        =>      $subIds,
+            '_style'        =>      $styles,
         ]);
     }
 

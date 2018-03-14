@@ -20,16 +20,19 @@ class Privilege extends Base
         'mode'          =>      'required|uuid',
         'pid'           =>      'nullable|uuid',
         'type'          =>      'required|in:1,9',
+        'styles'        =>      'nullable|array',
+        'style'         =>      'required|integer|in:1,2,4',
     ];
 
     protected static $scene = [
-        'insert'        =>      ['name','route','status','alias','module','controller','action','mode','pid','type'],
-        'update'        =>      ['uuid','name','route','status','alias','module','controller','action','mode','pid','type'],
+        'insert'        =>      ['name','route','status','alias','module','controller','action','mode','pid','type','styles'],
+        'update'        =>      ['uuid','name','route','status','alias','module','controller','action','mode','pid','type','styles'],
         'delete'        =>      ['uuid'],
+        'styles'        =>      ['style'],
     ];
 
     public static $allowFields = ['uuid','name','route','status','alias','createdby',
-        'createdtime','updatedby','updatedtime','module','controller','action','mode','pid','type','is_back'];
+        'createdtime','updatedby','updatedtime','module','controller','action','mode','pid','type','style'];
 
     public function index( Request $request )
     {
@@ -57,6 +60,9 @@ class Privilege extends Base
         $create                 =   array_map( function($v){
             return is_null($v) ? '' : $v;
         }, $create );
+        // ----处理显示方式
+        $create['style'] = self::_stylesHandle( $update['styles'] ?? [] );
+        unset($create['styles']);
         // 写库
         $result = DB::table('privilege')->insert($create);
 
@@ -65,7 +71,7 @@ class Privilege extends Base
 
     public function update(Request $request)
     {
-        // TODO 数据接收、验证、数据填充、数据处理、写库
+        // TODO 数据接收、验证、数据填充、数据处理(null,styles)、、写库
         // 数据接收验证
         $update         =   $request->get('update');
         $validator      =   Validator::make( $update, $this->scene('update') );
@@ -74,10 +80,13 @@ class Privilege extends Base
         // 数据填充
         $update['updatedby']    =   '50EA79FD5D3949499FCD24BDADE2B343';
         $update['updatedtime']  =   time();
-        // 数据处理 去除null
+        // 数据处理 去除null、
         $update                 =   array_map( function($v){
             return is_null($v) ? '' : $v;
         }, $update );
+        // ----处理显示方式
+        $update['style'] = self::_stylesHandle( $update['styles'] ?? [] );
+        unset($update['styles']);
         // 写库
         $uuid = $update['uuid'];
         $result = DB::table('privilege')->where('uuid',$uuid)->update($update);
