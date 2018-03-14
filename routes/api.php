@@ -30,6 +30,7 @@ Route::post('/role/update', 'Role@update')->name('api.role.update');
 Route::post('/privilege/create', 'Privilege@create')->name('api.privilege.create');
 Route::post('/privilege/index', 'Privilege@index')->name('api.privilege.index');
 Route::post('/privilege/update', 'Privilege@update')->name('api.privilege.update');
+Route::post('/privilege/delete', 'Privilege@delete')->name('api.privilege.delete');
 
 // mode
 Route::post('/mode/index','Mode@index')->name('api.mode.index');

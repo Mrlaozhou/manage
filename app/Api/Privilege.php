@@ -2,6 +2,7 @@
 namespace App\Api;
 use App\Exceptions\ApiException;
 use App\Support\Unique;
+use function foo\func;
 use Illuminate\Http\Request;
 use App\Api\Base;
 use Validator;
@@ -34,7 +35,7 @@ class Privilege extends Base
     public static $allowFields = ['uuid','name','route','status','alias','createdby',
         'createdtime','updatedby','updatedtime','module','controller','action','mode','pid','type','style'];
 
-    public function index( Request $request )
+    public function index ( Request $request )
     {
         $builder        =   DB::table('privilege')->select(...self::$allowFields)->where('status','<>','-7')
             ->orderBy('createdtime');
@@ -44,7 +45,7 @@ class Privilege extends Base
         return ['code'=>0,'msg'=>'','data'=>$data,'count'=>$count];
     }
 
-    public function create(Request $request)
+    public function create (Request $request)
     {
         // TODO 数据接收、验证、字段填充、数据处理、写库
         // 数据接收、验证
@@ -69,7 +70,7 @@ class Privilege extends Base
         return ['code'=>2900, 'status'=>$result, 'message'=>'', 'data'=>$create];
     }
 
-    public function update(Request $request)
+    public function update (Request $request)
     {
         // TODO 数据接收、验证、数据填充、数据处理(null,styles)、、写库
         // 数据接收验证
@@ -92,5 +93,25 @@ class Privilege extends Base
         $result = DB::table('privilege')->where('uuid',$uuid)->update($update);
 
         return ['code'=>2900, 'status'=>$result, 'message'=>'', 'data'=>$update];
+    }
+
+    public function delete (Request $request)
+    {
+        // TODO 数据接收、验证、删除主表（当前及下级）信息、修改关联信息
+        // -- 数据接收
+        $uuid       =   $request->get('uuid');
+        // -- 验证
+        if( Validator::make( ['uuid'=>$uuid], $this->scene('delete') )->fails() )
+            throw new ApiException( '数据无效' );
+        $privileges =   $this->showAll()->toArray();
+        $ids        =   array_merge( array_column( Sorts($privileges, true, $uuid) ,'uuid' ), [$uuid]);
+        DB::transaction( function () use($ids){
+            // ---- 删除主表
+            DB::table('privilege')->whereIn( 'uuid', $ids )->delete();
+            // ---- 删除关联信息
+            DB::table('relation2')->whereIn( 'puuid',$ids )->delete();
+        } );
+
+        return [ 'code'=>2900, 'status'=>'', 'message'=>'', 'data'=>'' ];
     }
 }

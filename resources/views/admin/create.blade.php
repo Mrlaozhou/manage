@@ -15,17 +15,31 @@
                 <label class="layui-form-label">用户名</label>
                 <div class="layui-input-block" style="width:30%;">
                     <input type="text" name="{{ $handle }}[username]"  lay-verify="required|username"
+                           @if( $handle == 'update' )
+                                disabled
+                           @endif
                            placeholder="请输入用户名" autocomplete="off" class="layui-input" value="{{ $info->username or '' }}">
                 </div>
             </div>
-            {{-- password --}}
-            <div class="layui-form-item">
-                <label class="layui-form-label">密码</label>
-                <div class="layui-input-block" style="width:30%;">
-                    <input type="password" name="{{ $handle }}[password]"  lay-verify="required|password"
-                           placeholder="请输入密码" autocomplete="off" class="layui-input" value="">
+            @if( $handle == 'created' )
+                {{-- password --}}
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码</label>
+                    <div class="layui-input-block" style="width:30%;">
+                        <input type="password" name="{{ $handle }}[password]"  lay-verify="required|password"
+                               placeholder="请输入密码" autocomplete="off" class="layui-input" value="">
+                    </div>
                 </div>
-            </div>
+            @else
+                {{-- password --}}
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码</label>
+                    <div class="layui-input-block" style="width:30%;">
+                        <input type="password" name="{{ $handle }}[password]"  lay-verify="emptyOrPassword"
+                               placeholder="请输入密码" autocomplete="off" class="layui-input" value="">
+                    </div>
+                </div>
+            @endif
             {{-- password_confirmation --}}
             <div class="layui-form-item">
                 <label class="layui-form-label">重复密码</label>
@@ -34,22 +48,17 @@
                            placeholder="请输入密码" autocomplete="off" class="layui-input" value="">
                 </div>
             </div>
-            {{-- issalt --}}
+            {{-- issalt 经创建用户时选择 --}}
             <div class="layui-form-item">
                 <label class="layui-form-label">是否加盐</label>
                 <div class="layui-input-block">
-                    @isset($info->issalt)
-                        @if( $info->issalt == '1' )
-                            <input type="radio" name="{{ $handle }}[issalt]" lay-verify="" value="1" title="是" checked>
-                            <input type="radio" name="{{ $handle }}[issalt]" lay-verify="" value="0" title="否">
-                        @else
-                            <input type="radio" name="{{ $handle }}[issalt]" lay-verify="" value="1" title="是">
-                            <input type="radio" name="{{ $handle }}[issalt]" lay-verify="" value="0" title="否" checked>
-                        @endif
+                    @if( isset($info->issalt) && $info->issalt == '0' )
+                        <input type="radio" lay-filter="allowChoose" name="{{ $handle }}[issalt]" lay-verify="" value="1" title="是">
+                        <input type="radio" lay-filter="allowChoose" name="{{ $handle }}[issalt]" lay-verify="" value="0" title="否" checked>
                     @else
-                        <input type="radio" name="{{ $handle }}[issalt]" lay-verify="" value="1" title="是" checked>
-                        <input type="radio" name="{{ $handle }}[issalt]" lay-verify="" value="0" title="否">
-                    @endisset
+                        <input type="radio" lay-filter="allowChoose" name="{{ $handle }}[issalt]" lay-verify="" value="1" title="是" checked>
+                        <input type="radio" lay-filter="allowChoose" name="{{ $handle }}[issalt]" lay-verify="" value="0" title="否">
+                    @endif
                 </div>
             </div>
             {{-- status --}}
@@ -125,9 +134,9 @@
         <div class="layui-form-item">
             <div class="layui-input-block">
                 @isset($info->uuid)
-                    <input type="hidden" name="uuid" value="{{ $info->uuid }}">
+                    <input type="hidden" name="{{ $handle }}[uuid]" value="{{ $info->uuid }}">
                 @endisset
-                <input type="hidden" name="avatar" value="{{ $info->avatar or '' }}">
+                <input type="hidden" name="{{ $handle }}[avatar]" value="{{ $info->avatar or '' }}">
             </div>
         </div>
         {{-- submit --}}
@@ -159,6 +168,10 @@
             password_confirmation:function(value){
                 var password = $('input[name="{{ $handle }}[password]"]').val();
                 if( value !== password )    return '两次密码不一致！';
+            },
+            emptyOrPassword:function (value) {
+                var reg = /^[a-zA-z]{1}[~@#$%^&*()_+<>:{}a-zA-Z0-9]{7,20}$/i;
+                if( value != '' && !reg.test(value) )    return '密码为字母开头的8到20位~@#$%^&*()_+<>:{}a-zA-Z0-9';
             },
             emptyOrEmail:function(value){
                 if( value != '' && !this.email[0].test(value) )
@@ -193,11 +206,11 @@
             }
         });
         // 监听添加
-        form.on( 'submit(create)',function (obj) {
+        form.on( 'submit({{ $handle }})',function (obj) {
             var data    =   obj.field,
                 api     =   $(this).attr('api');
             $.post(api,data,function (res) {
-                if( res.code == 200 )
+                if( res.code == 2900 )
                 {
                     layer.msg('Successfully');
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
@@ -217,7 +230,14 @@
 
             return false;
         } );
-
+        // 监听修改状态下 加盐模式切换
+        @if( $handle == 'update' )
+        form.on('radio(allowChoose)', function(data){
+            var obj         =   data.value,
+                password    =   $('input[name="update[password]"]').val();
+            if( password == '' ) layer.msg('不重置密码 切换此项将毫无意义哟');
+        });
+        @endif
         form.render();
     } )
 </script>

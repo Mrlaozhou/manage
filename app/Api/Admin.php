@@ -24,7 +24,8 @@ class Admin extends Base
 
     protected static $scene = [
         'insert'        =>  [ 'username', 'password', 'password_confirmation', 'issalt', 'status', 'intro', 'avatar', 'phone', 'email' ],
-        'update'        =>  [ 'uuid', 'username', 'password', 'password_confirmation', 'issalt', 'status', 'intro', 'avatar', 'phone', 'email' ],
+        'update'        =>  [ 'uuid', 'password', 'password_confirmation', 'issalt', 'status', 'intro', 'avatar', 'phone', 'email' ],
+        'update_without_pass' =>  [ 'uuid', 'status', 'intro', 'avatar', 'phone', 'email' ],
         'delete'        =>  [ 'uuid' ],
         'relation'      =>  [ 'ruuid' ],
     ];
@@ -46,7 +47,7 @@ class Admin extends Base
         // ---- 验证主表字段
         $adminValidator         =   Validator::make( $create, $this->scene('insert') );
         if( $adminValidator->fails() )  throw new ApiException( $adminValidator->errors() );
-        // ---- 验证关联表
+        // ---- 验证关联字段
         foreach ( $ruuids as $ruuid ):
             $ruuidValidator     =   Validator::make( ['ruuid'=>$ruuid], $this->scene('relation')  );
             if( $ruuidValidator->fails() )  throw new ApiException( $ruuidValidator->errors() );
@@ -54,6 +55,7 @@ class Admin extends Base
         // -- 数据填充
         $create['uuid']           =   Unique::UUID();
         $create['createdby']      =   '4203A4F8837C1B66C201F9C230F8E3D1';
+        $create['createdtime']    =   time();
         // 加密
         $crypt                  =   $create['issalt']
             ?   Unique::generatePasswordWithSalt( $create['password'] )
@@ -62,8 +64,6 @@ class Admin extends Base
         $create['salt']           =   $crypt['salt'] ?? '';
         // 去除验证密码
         unset($create['password_confirmation']);
-        // 数据填充
-        $create['createdtime']    =   time();
         // 去除 null
         $create                   =   array_map(function($v){ return is_null($v) ? '' : $v; },$create);
 
@@ -79,8 +79,56 @@ class Admin extends Base
         return ['code'=>2900, 'status'=>'', 'message'=>'', 'data'=>''];
     }
 
-    public function udpate (Request $request)
+    public function update (Request $request)
     {
-        // TODO
+        // TODO 数据接收、验证(有无密码两种情况)、数据填充、数据处理
+        // -- 数据接收
+        $update = $request->get('update');
+        $ruuids = $request->get('ruuids') ?: [];
+        // -- 数据验证
+        // ---- 是否密码重置验证
+        $isResetPassword = ( $update['password'] != '' );
+        $adminValidator = ( $isResetPassword == false )
+            ?   Validator::make( $update, $this->scene( 'update_without_pass' ) )
+            :   Validator::make( $update, $this->scene( 'update' ) );
+        // ---- 异常处理
+        if( $adminValidator->fails() )  throw new ApiException( $adminValidator->errors() );
+        // ---- 验证关联表
+        foreach ( $ruuids as $ruuid ):
+            $ruuidValidator     =   Validator::make( ['ruuid'=>$ruuid], $this->scene('relation')  );
+            if( $ruuidValidator->fails() )  throw new ApiException( $ruuidValidator->errors() );
+        endforeach;
+        // -- 数据填充
+        $update['updatedby']        =   '4203A4F8837C1B66C201F9C230F8E3D1';
+        $update['updatedtime']      =   time();
+        if ( $isResetPassword )
+        {
+            // ------ 加密
+            $crypt                  =   $update['issalt']
+                ?   Unique::generatePasswordWithSalt( $update['password'] )
+                :   Unique::generatePassword( $update['password'] );
+            $update['password']       =   $crypt['password'] ?? $crypt;
+            $update['salt']           =   $crypt['salt'] ?? '';
+        }
+        else
+        {
+            unset($update['password']);
+            unset($update['issalt']);
+        }
+        // -- 数据处理 去除 null、用户名禁止改动
+        unset($update['username']);unset($update['password_confirmation']);
+        $update     =   array_map( function($v){ return is_null($v) ? '' : $v; },$update );
+        // -- 写库
+        DB::transaction( function() use($update,$ruuids){
+            $uuid = $update['uuid'];
+            // ---- 更新主表
+            DB::table('admin')->where( 'uuid',$uuid )->update( $update );
+            // ---- 删除关联表原有关联
+            DB::table('relation1')->where( 'auuid',$uuid )->delete();
+            // ---- 插入新关联
+            $relations = array_map(function($v) use($uuid){ return ['auuid'=>$uuid,'ruuid'=>$v]; },$ruuids);
+            DB::table('relation1')->insert($relations);
+        } );
+        return [ 'code'=>2900, 'status'=>'', 'message'=>$ruuids, 'data'=>$update ];
     }
 }

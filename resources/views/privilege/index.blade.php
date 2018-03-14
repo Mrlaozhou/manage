@@ -70,8 +70,17 @@
             if( curr == 'del' )
             {
                 layer.confirm( '确定要删除此列吗?',{icon: 3, title:'提示'},function (index) {
-
-//                    layer.clone(index);
+                    $.post( "{{ route('api.privilege.delete') }}", {uuid:data.uuid}, function(res){
+                        if( res.code == 2900 ) {
+                            layer.msg('删除成功');
+                            table.reload('privilegeTable');
+                            return;
+                        }else{
+                            layer.open({
+                                title : '错误提示', type : 0, content : res.error,
+                            });
+                        }
+                    },'JSON' );
                 } );
             }else if( curr == 'edit' ){
                 openLayer('编辑-'+data.name,'{{ url('privilege/update') }}'+'/'+data.uuid);

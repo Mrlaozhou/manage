@@ -24,7 +24,6 @@ class Mode extends Base
         'delete'    =>  ['uuid'],
     ];
 
-
     public function index ( Request $request )
     {
         //
@@ -75,5 +74,24 @@ class Mode extends Base
         $result     =   DB::table('mode')->where('uuid',$uuid)->update($update);
 
         return ['code'=>2900, 'status'=>$result, 'message'=>'', 'data'=>''];
+    }
+
+    public function delete (Request $request)
+    {
+        // TODO 数据接收、验证、删除主表数据、更新privilege数据
+        // -- 数据接收
+        $uuid =  $request->get('uuid');
+        // -- 数据验证
+        if( Validator::make( ['uuid'=>$uuid],$this->scene('delete') )->fails() )
+            throw new ApiException( '数据无效' );
+
+        DB::transaction( function () use($uuid){
+            // ---- 删除主表数据
+            DB::table('mode')->where( 'uuid',$uuid )->delete();
+            // ---- 更新privilege表 关联数据->mode字段
+            DB::table('privilege')->where( 'mode',$uuid )->update(['mode'=>'-']);
+        } );
+
+        return [ 'code'=>2900, 'status'=>'', 'message'=>'', 'data'=>'' ];
     }
 }

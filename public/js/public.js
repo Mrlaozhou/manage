@@ -100,7 +100,7 @@ layui.use(['form','element','jquery'], function() {
                     $(this).children('a').find('.nav_right').html('&#xe61a;');
                     $(this).children('.sub-menu').stop().slideDown();
                     $(this).siblings().children('.sub-menu').stop().slideUp();
-                    $(this).siblings().find('.nav_right').html('&#xe61a;');
+                    // $(this).siblings().find('.nav_right').html('&#xe61a;');
                     $(this).siblings().removeClass('open');
                 }
             }else{

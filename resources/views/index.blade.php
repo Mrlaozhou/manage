@@ -41,7 +41,7 @@
             @foreach( $pris as $key => $item )
                 <li>
                     <a href="javascript:;">
-                        <i class="layui-icon">&#xe612;</i>
+                        <i class="layui-icon"></i>
                         <cite>{{ $item->name }}</cite>
                         <i class="layui-icon nav_right">&#xe603;</i>
                     </a>
