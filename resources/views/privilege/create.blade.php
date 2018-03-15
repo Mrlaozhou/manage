@@ -155,6 +155,7 @@
                 @isset( $info->uuid )
                     <input type="hidden" name="{{ $handle }}[uuid]" value="{{ $info->uuid or '' }}">
                 @endisset
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </div>
         </div>
         {{-- submit --}}

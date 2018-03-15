@@ -137,6 +137,7 @@
                     <input type="hidden" name="{{ $handle }}[uuid]" value="{{ $info->uuid }}">
                 @endisset
                 <input type="hidden" name="{{ $handle }}[avatar]" value="{{ $info->avatar or '' }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </div>
         </div>
         {{-- submit --}}

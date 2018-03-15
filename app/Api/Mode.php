@@ -42,7 +42,7 @@ class Mode extends Base
         if( $validator->fails() )   throw new ApiException($validator->errors());
         // 数据填充
         $create['uuid']             =   Unique::UUID();
-        $create['createdby']        =   '18B24A268E64969B26CB6F0C1BC12E54';
+        $create['createdby']        =   session('_user')->uuid;
         $create['createdtime']      =   time();
         // 数据处理、 去除 null
         $create     =   array_map( function($v){
@@ -51,7 +51,7 @@ class Mode extends Base
         // 写库
         $result     =   DB::table('mode')->insert($create);
 
-        return ['code'=>2900, 'status'=>$result, 'message'=>'', 'data'=>''];
+        return ['code'=>2900, 'status'=>$request->session()->all(), 'message'=>'', 'data'=>''];
     }
 
     public function update (Request $request)
@@ -61,7 +61,7 @@ class Mode extends Base
         $update         =   $request->get('update');
         $validator      =   Validator::make( $update, $this->scene('update') );
         // 数据填充
-        $update['updatedby']    =   '50EA79FD5D3949499FCD24BDADE2B343';
+        $update['updatedby']    =   session('_user')->uuid;
         $update['updatedtime']  =   time();
         // 数据处理、 去除 null
         $update     =   array_map( function($v){

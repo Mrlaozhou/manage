@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+//login
+Route::post('/login','Index@login')->name('api.login');
+Route::post('/logout','Index@logout')->name('api.logout');
 
 
 // admin

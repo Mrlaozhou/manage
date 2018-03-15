@@ -4,7 +4,9 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
+use TheSeer\Tokenizer\TokenCollectionException;
 
 class Handler extends ExceptionHandler
 {
@@ -58,6 +60,11 @@ class Handler extends ExceptionHandler
                 'data'      =>  '',
             ];
             return response()->json($result);
+        }
+        // token 验证异常
+        if( $exception instanceof TokenMismatchException && $request->isXmlHttpRequest() )
+        {
+            return response()->json(['code'=>4919, 'error'=>'Illegal.','data'=>'']);
         }
         // 验证异常
         if( $exception instanceof ValidationException && $request->isXmlHttpRequest())

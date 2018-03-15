@@ -1,3 +1,5 @@
+var _TOKEN      =   $('mate[name="csrf-token"]').attr('content')
+
 
 //加载弹出层
 layui.use(['form','element','jquery'], function() {
@@ -174,3 +176,4 @@ function timestampToTime(timestamp)
     s = date.getSeconds();
     return Y+M+D+h+m+s;
 }
+

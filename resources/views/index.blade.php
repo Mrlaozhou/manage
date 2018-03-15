@@ -48,7 +48,7 @@
                     <ul class="sub-menu">
                     @foreach( $item->son as $k => $v )
                         <li>
-                            <a _href="{{ url(str_replace('-','/',$v->route)) }}">
+                            <a _href="{{ url(str_replace('^','/',$v->route)) }}">
                                 <i class="layui-icon">&#xe602;</i>
                                 <cite>{{ $v->name }}</cite>
                             </a>

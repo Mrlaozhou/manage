@@ -24,7 +24,7 @@ class PrivilegeController extends Controller
             ->orderBy('createdtime')
             ->get()->toArray();
         // 权限列表
-        $privileges     =   Sorts( $this->privilegeList()->toArray(),true);
+        $privileges     =   Sorts( $this->showParent()->toArray(),true);
 
         // 显示列表
         $styles         =   self::$_octal;
@@ -48,7 +48,7 @@ class PrivilegeController extends Controller
             ->orderBy('createdtime')
             ->get()->toArray();
         // 权限列表
-        $privileges     =   Sorts( $this->privilegeList()->toArray(),true);
+        $privileges     =   Sorts( $this->showParent()->toArray(),true);
         $subItems       =   Sorts($privileges,true,$uuid);
         $subIds         =   array_map(function($v){
             return $v->uuid;
@@ -67,9 +67,4 @@ class PrivilegeController extends Controller
         ]);
     }
 
-    protected function privilegeList()
-    {
-        return DB::table('privilege')->select(...['uuid','name','pid'])
-            ->where('status','1')->get();
-    }
 }

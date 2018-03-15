@@ -9,4 +9,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Base extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ValidateScene, ValidPrivilege;
+
+    protected static $Harmonious = [
+        1   =>  "I know it's just a little joke.",
+        2   =>  "Are you trying to move me ?",
+    ];
 }
