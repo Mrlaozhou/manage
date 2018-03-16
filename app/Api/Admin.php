@@ -1,6 +1,7 @@
 <?php
 namespace App\Api;
 use App\Exceptions\ApiException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Api\Base;
@@ -54,7 +55,7 @@ class Admin extends Base
         endforeach;
         // -- 数据填充
         $create['uuid']           =   Unique::UUID();
-        $create['createdby']      =   session('_user')->uuid;
+        $create['createdby']      =   self::operatorUUID();
         $create['createdtime']    =   time();
         // 加密
         $crypt                  =   $create['issalt']
@@ -99,7 +100,7 @@ class Admin extends Base
             if( $ruuidValidator->fails() )  throw new ApiException( $ruuidValidator->errors() );
         endforeach;
         // -- 数据填充
-        $update['updatedby']        =   session('_user')->uuid;
+        $update['updatedby']        =   self::operatorUUID();
         $update['updatedtime']      =   time();
         if ( $isResetPassword )
         {

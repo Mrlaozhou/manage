@@ -42,7 +42,7 @@ class Mode extends Base
         if( $validator->fails() )   throw new ApiException($validator->errors());
         // 数据填充
         $create['uuid']             =   Unique::UUID();
-        $create['createdby']        =   session('_user')->uuid;
+        $create['createdby']        =   self::operatorUUID();
         $create['createdtime']      =   time();
         // 数据处理、 去除 null
         $create     =   array_map( function($v){
@@ -61,7 +61,7 @@ class Mode extends Base
         $update         =   $request->get('update');
         $validator      =   Validator::make( $update, $this->scene('update') );
         // 数据填充
-        $update['updatedby']    =   session('_user')->uuid;
+        $update['updatedby']    =   self::operatorUUID();
         $update['updatedtime']  =   time();
         // 数据处理、 去除 null
         $update     =   array_map( function($v){

@@ -14,20 +14,10 @@ class IndexController extends Controller
         // TODO 获取当前用户的权限列表
         $pris = $this->showSlider();
         $pris = Trees($pris);
-//        dump($pris);
+//        dump($pris);exit;
         return view('index',[
             'pris'          =>      $pris,
         ]);
     }
-
-    public function simulationLogin()
-    {
-        session([
-                '_user'=>DB::table('admin')
-                    ->select(...['uuid','username','intro','email','phone','avatar'])
-                    ->where( 'uuid', env('ROOT') )->first()
-            ]);
-    }
-
 
 }

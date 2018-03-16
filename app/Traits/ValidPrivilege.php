@@ -43,7 +43,7 @@ trait ValidPrivilege
 
     protected static function _privileges()
     {
-        return DB::table('privilege')->where('status','<>','-7');
+        return DB::table('privilege')->where('status','<>','-7')->orderBy('createdby');
     }
 
     protected static function _octalMap($oct=7)

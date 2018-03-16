@@ -48,7 +48,7 @@ class Role extends Base
         endforeach;
         // -- 数据填充
         $create['uuid']             =   Unique::UUID();
-        $create['createdby']        =   session('_user')->uuid;
+        $create['createdby']        =   self::operatorUUID();
         $create['createdtime']      =   time();
         // -- 数据处理 去除null
         $create                     =   array_map( function($v){ return is_null($v) ? '' : $v; }, $create );
@@ -81,7 +81,7 @@ class Role extends Base
             if( $puuidValidator->fails() )  throw new ApiException( '权限uuid出错：'.$uuid );
         endforeach;
         // -- 数据填充
-        $update['updatedby']    =   session('_user')->uuid;
+        $update['updatedby']    =   self::operatorUUID();
         $update['updatedtime']  =   time();
         // -- 数据处理
         $update                 =   array_map( function($v){ return is_null($v) ? '' : $v; }, $update );

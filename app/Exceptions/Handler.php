@@ -51,32 +51,26 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // 访问控制异常
+        if( $exception instanceof AccessControlException){
+            if( $request->isXmlHttpRequest() )
+                return response()->json([ 'code'=>4903, 'status'=>false, 'message'=>$exception->getMessage(), 'data'=>'' ]);
+
+            return redirect( $request->user() ? '/' : '/login' );
+        }
         // 接口异常
         if( $exception instanceof ApiException)
-        {
-            $result = [
-                'code'      =>  4901,
-                'error'   =>  $exception->getMessage(),
-                'data'      =>  '',
-            ];
-            return response()->json($result);
-        }
+            return response()->json([ 'code'=>4901, 'error'=>$exception->getMessage(), 'data'=>'']);
+
         // token 验证异常
         if( $exception instanceof TokenMismatchException && $request->isXmlHttpRequest() )
-        {
             return response()->json(['code'=>4919, 'error'=>'Illegal.','data'=>'']);
-        }
+
         // 验证异常
-        if( $exception instanceof ValidationException && $request->isXmlHttpRequest())
-        {
+        if( $exception instanceof ValidationException && $request->isXmlHttpRequest()) {
             $errors = array_values( $exception->errors() );
             $error = $errors[0][0];
-            return response()->json([
-                'code'      =>  4902,
-                'message'   =>  '',
-                'error'     =>  $error,
-                'data'      =>  '',
-            ]);
+            return response()->json(['code'=>4902, 'message' =>'', 'error'=>$error, 'data'=>  '',]);
         }
 
         return parent::render($request, $exception);

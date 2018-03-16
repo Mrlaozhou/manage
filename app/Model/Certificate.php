@@ -26,11 +26,27 @@ class Certificate extends User
 
     protected $hidden       =   [ 'password', 'salt', 'createdby', 'updatedby' ];
 
+    /**
+     * @var string
+     */
+    protected $rememberTokenName = '';
+
+    public $timestamps      =   false;
+
 
     public function validateCredentials($user, $credentials)
     {
-        return ( $user->attributes['issalt'] == '1' )
+        // TODO 证书验证、登陆记录
+        $certificate = ( $user->attributes['issalt'] == '1' )
             ?   Unique::checkSaltedPassword( $credentials['password'], $user->attributes['salt'], $user->attributes['password'] )
             :   Unique::checkPassword( $credentials['password'], $user->attributes['password'] );
+
+        return $certificate && $this->_loginrecordupdate( $user );
+    }
+
+    private function _loginrecordupdate($user)
+    {
+        $user->lastlogintime    =   time();
+        return $user->save();
     }
 }

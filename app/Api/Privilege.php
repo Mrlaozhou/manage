@@ -55,7 +55,7 @@ class Privilege extends Base
         if ($validator->fails())    throw new ApiException($validator->errors());
         // 字段填充 uuid,createby createdtime
         $create['uuid']         =   Unique::UUID();
-        $create['createdby']    =   session('_user')->uuid;
+        $create['createdby']    =   self::operatorUUID();
         $create['createdtime']  =   time();
         // 数据处理  去除 null
         $create                 =   array_map( function($v){
@@ -79,7 +79,7 @@ class Privilege extends Base
         // 异常抛出
         if ($validator->fails())    throw new ApiException($validator->errors());
         // 数据填充
-        $update['updatedby']    =   session('_user')->uuid;
+        $update['updatedby']    =   self::operatorUUID();
         $update['updatedtime']  =   time();
         // 数据处理 去除null、
         $update                 =   array_map( function($v){
