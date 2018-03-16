@@ -11,8 +11,6 @@ class TestController extends Controller
     //
     public function index(Request $request)
     {
-        $ps = Unique::getUUID();
-        $l = strlen(Hash::make($ps));
-        dump($l);
+
     }
 }
