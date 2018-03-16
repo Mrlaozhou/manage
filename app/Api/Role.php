@@ -48,7 +48,7 @@ class Role extends Base
         endforeach;
         // -- 数据填充
         $create['uuid']             =   Unique::UUID();
-        $create['createdby']        =   '4203A4F8837C1B66C201F9C230F8E3D1';
+        $create['createdby']        =   self::operatorUUID();
         $create['createdtime']      =   time();
         // -- 数据处理 去除null
         $create                     =   array_map( function($v){ return is_null($v) ? '' : $v; }, $create );
@@ -81,7 +81,7 @@ class Role extends Base
             if( $puuidValidator->fails() )  throw new ApiException( '权限uuid出错：'.$uuid );
         endforeach;
         // -- 数据填充
-        $update['updatedby']    =   '4203A4F8837C1B66C201F9C230F8E3D1';
+        $update['updatedby']    =   self::operatorUUID();
         $update['updatedtime']  =   time();
         // -- 数据处理
         $update                 =   array_map( function($v){ return is_null($v) ? '' : $v; }, $update );
@@ -98,5 +98,26 @@ class Role extends Base
         });
 
         return [ 'code'=>2900, 'status'=>'', 'message'=>'', 'data'=>$puuids ];
+    }
+
+    public function delete (Request $request)
+    {
+        // TODO 数据接收、验证、删除主表数据、删除关联表数据（relation1、relation2）
+        // -- 数据接收
+        $uuid       =   $request->get('uuid');
+        // -- 数据验证
+        if( Validator::make( ['uuid'=>$uuid], $this->scene( 'delete' ) )->fails() )
+            throw new ApiException( '数据无效' );
+        // -- 写库
+        DB::transaction( function() use($uuid){
+            // 删除主表数据
+            DB::table('role')->where( 'uuid', $uuid )->delete();
+            // 删除relation2 ( r--p ) 关联信息
+            DB::table('relation2')->where( 'ruuid', $uuid )->delete();
+            // 删除relation1 ( a--r ) 关联信息
+            DB::table('relation1')->where( 'ruuid', $uuid )->delete();
+        } );
+
+        return [ 'code'=>2900, 'status'=>'', 'message'=>'', 'data'=>'' ];
     }
 }

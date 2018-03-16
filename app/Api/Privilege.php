@@ -55,14 +55,14 @@ class Privilege extends Base
         if ($validator->fails())    throw new ApiException($validator->errors());
         // 字段填充 uuid,createby createdtime
         $create['uuid']         =   Unique::UUID();
-        $create['createdby']    =   '18B24A268E64969B26CB6F0C1BC12E54';
+        $create['createdby']    =   self::operatorUUID();
         $create['createdtime']  =   time();
         // 数据处理  去除 null
         $create                 =   array_map( function($v){
             return is_null($v) ? '' : $v;
         }, $create );
         // ----处理显示方式
-        $create['style'] = self::_stylesHandle( $update['styles'] ?? [] );
+        $create['style'] = self::_stylesHandle( $create['styles'] ?? [] );
         unset($create['styles']);
         // 写库
         $result = DB::table('privilege')->insert($create);
@@ -79,7 +79,7 @@ class Privilege extends Base
         // 异常抛出
         if ($validator->fails())    throw new ApiException($validator->errors());
         // 数据填充
-        $update['updatedby']    =   '50EA79FD5D3949499FCD24BDADE2B343';
+        $update['updatedby']    =   self::operatorUUID();
         $update['updatedtime']  =   time();
         // 数据处理 去除null、
         $update                 =   array_map( function($v){
@@ -103,7 +103,9 @@ class Privilege extends Base
         // -- 验证
         if( Validator::make( ['uuid'=>$uuid], $this->scene('delete') )->fails() )
             throw new ApiException( '数据无效' );
+        // -- 权限列表
         $privileges =   $this->showAll()->toArray();
+        // -- id集
         $ids        =   array_merge( array_column( Sorts($privileges, true, $uuid) ,'uuid' ), [$uuid]);
         DB::transaction( function () use($ids){
             // ---- 删除主表

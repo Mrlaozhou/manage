@@ -51,3 +51,15 @@ if( !function_exists('Sorts') )
         return $sorts;
     }
 }
+
+if( !function_exists('dump_sql') )
+{
+    function dump_sql($exec)
+    {
+        DB::enableQueryLog();
+
+        $exec();
+
+        dump(DB::getQueryLog());
+    }
+}

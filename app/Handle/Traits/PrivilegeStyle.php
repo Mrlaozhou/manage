@@ -1,8 +1,7 @@
 <?php
-namespace App\Traits;
-use DB;
+namespace App\Handle\Traits;
 
-trait ValidPrivilege
+trait PrivilegeStyle
 {
     protected static $_octalMap = [
         0     =>  [],
@@ -20,31 +19,6 @@ trait ValidPrivilege
         2       =>  '授权显示',
         4       =>  '父级显示',
     ];
-
-    protected function showAll()
-    {
-        return self::_privileges()->get();
-    }
-
-    protected function showParent()
-    {
-        return self::_privileges()->whereIn('style',[4,5,6,7])->get();
-    }
-
-    protected function showAuth()
-    {
-        return self::_privileges()->whereIn('style',[2,3,6,7])->get();
-    }
-
-    protected function showSlider()
-    {
-        return self::_privileges()->whereIn('style',[1,3,5,7])->get();
-    }
-
-    protected static function _privileges()
-    {
-        return DB::table('privilege')->where('status','<>','-7')->orderBy('createdby');
-    }
 
     protected static function _octalMap($oct=7)
     {

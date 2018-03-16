@@ -1,6 +1,7 @@
 <?php
 namespace App\Api;
 use App\Exceptions\ApiException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Api\Base;
@@ -30,7 +31,7 @@ class Admin extends Base
         'relation'      =>  [ 'ruuid' ],
     ];
 
-    public function index( Request $request )
+    public function index ( Request $request )
     {
         $data = DB::table('admin')->where('status','<>','-7')->get()->toArray();
 
@@ -54,7 +55,7 @@ class Admin extends Base
         endforeach;
         // -- 数据填充
         $create['uuid']           =   Unique::UUID();
-        $create['createdby']      =   '4203A4F8837C1B66C201F9C230F8E3D1';
+        $create['createdby']      =   self::operatorUUID();
         $create['createdtime']    =   time();
         // 加密
         $crypt                  =   $create['issalt']
@@ -99,7 +100,7 @@ class Admin extends Base
             if( $ruuidValidator->fails() )  throw new ApiException( $ruuidValidator->errors() );
         endforeach;
         // -- 数据填充
-        $update['updatedby']        =   '4203A4F8837C1B66C201F9C230F8E3D1';
+        $update['updatedby']        =   self::operatorUUID();
         $update['updatedtime']      =   time();
         if ( $isResetPassword )
         {
@@ -130,5 +131,24 @@ class Admin extends Base
             DB::table('relation1')->insert($relations);
         } );
         return [ 'code'=>2900, 'status'=>'', 'message'=>$ruuids, 'data'=>$update ];
+    }
+
+    public function delete (Request $request)
+    {
+        // TODO 数据接收、验证、删除主表信息、删除关联表信息
+        // -- 数据接收
+        $uuid       =   $request->get('uuid');
+        // -- 验证
+        if ( Validator::make( ['uuid'=>$uuid], $this->scene( 'delete' ) )->fails() )
+            throw new ApiException( '数据无效' );
+        //写库
+        DB::transaction( function () use($uuid){
+            // 删除主表信息
+            DB::table('admin')->where( 'uuid', $uuid )->delete();
+            // 删除关联信息
+            DB::table('relation1')->where( 'auuid', $uuid )->delete();
+        } );
+
+        return [ 'code'=>2900, 'status'=>'', 'message'=>'', 'data'=>'' ];
     }
 }

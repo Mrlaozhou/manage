@@ -22,12 +22,12 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
-                    @if( isset($info->status) && $info->status == '1' )
-                            <input type="radio" name="{{ $handle }}[status]" value="1" title="开启" checked>
-                            <input type="radio" name="{{ $handle }}[status]" value="0" title="关闭">
-                        @else
+                    @if( isset($info->status) && $info->status == '0' )
                             <input type="radio" name="{{ $handle }}[status]" value="1" title="开启">
                             <input type="radio" name="{{ $handle }}[status]" value="0" title="关闭" checked>
+                        @else
+                            <input type="radio" name="{{ $handle }}[status]" value="1" title="开启" checked>
+                            <input type="radio" name="{{ $handle }}[status]" value="0" title="关闭">
                     @endif
                 </div>
             </div>
@@ -48,6 +48,7 @@
                 @isset($info->uuid)
                     <input type="hidden" name="{{ $handle }}[uuid]" value="{{ $info->uuid }}">
                 @endisset
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </div>
         </div>
         {{-- submit --}}
@@ -79,11 +80,7 @@
                 }
                 else
                 {
-                    layer.open({
-                        title : '错误提示',
-                        type : 0,
-                        content : res.error,
-                    });
+                    layer.msg( res.message );
                 }
             },'json');
             return false;

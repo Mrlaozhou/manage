@@ -22,19 +22,17 @@
     </ul>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item">
-            <a href="javascript:;">老周</a>
+            <a href="javascript:;">{{ \Auth::user()->username }}</a>
             <dl class="layui-nav-child"> <!-- 二级菜单 -->
                 <dd><a onclick="openLayer('个人信息','http://www.baidu.com')">个人信息</a></dd>
-                <dd><a href="/logout">退出</a></dd>
+                <dd><a href="javascript:;" onclick="logout()">退出</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
     </ul>
 
 </div>
-<!-- 顶部结束 -->
-<!-- 中部开始 -->
-<!-- 左侧菜单开始 -->
+
 <div class="left-nav">
     <div id="side-nav">
         <ul id="nav">
@@ -48,7 +46,7 @@
                     <ul class="sub-menu">
                     @foreach( $item->son as $k => $v )
                         <li>
-                            <a _href="{{ url(str_replace('-','/',$v->route)) }}">
+                            <a _href="{{ url(str_replace('^','/',$v->route)) }}">
                                 <i class="layui-icon">&#xe602;</i>
                                 <cite>{{ $v->name }}</cite>
                             </a>
@@ -60,9 +58,7 @@
         </ul>
     </div>
 </div>
-<!-- <div class="x-slide_left"></div> -->
-<!-- 左侧菜单结束 -->
-<!-- 右侧主体开始 -->
+
 <div class="page-content">
     <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
         <ul class="layui-tab-title">
@@ -76,11 +72,30 @@
     </div>
 </div>
 <div class="page-content-bg"></div>
-<!-- 右侧主体结束 -->
-<!-- 中部结束 -->
-<!-- 底部开始 -->
+
 <div class="footer">
     <div class="copyright">© Copyright 2018 by LaoZhou</div>
 </div>
+<script>
+    layui.use( [ 'jquery','element','layer' ],function () {
+        var elem        =   layui.element,
+            layer       =   layui.layer,
+            $           =   layui.jquery;
+
+    } );
+
+    function logout()
+    {
+        layer.confirm( '确定要退出登录吗?',{icon: 3, title:'提示'},function (index) {
+            $.post( '{{ route('api.logout') }}', {_token:_TOKEN}, function (res) {
+                if( res.code == 2900 ){
+                    location.replace( '/login' );return ;
+                }else {
+                    layer.msg(res.message);return ;
+                }
+            }, 'JSON' );
+        });
+    }
+</script>
 </body>
 </html>

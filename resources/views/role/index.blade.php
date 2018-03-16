@@ -57,6 +57,9 @@
             ,done:function (obj) {
                 layer.msg('刷新成功');
             }
+            ,where: {
+                _token: _TOKEN
+            }
         });
 
         table.on( 'tool(current)',function (obj) {
@@ -67,15 +70,13 @@
             if( curr == 'del' )
             {
                 layer.confirm( '确定要删除此列吗?',{icon: 3, title:'提示'},function (index) {
-                    $.post( "{{ route('api.role.delete') }}", {uuid:data.uuid}, function(res){
+                    $.post( "{{ route('api.role.delete') }}", {uuid:data.uuid,_token:_TOKEN}, function(res){
                         if( res.code == 2900 ) {
                             layer.msg('删除成功');
                             table.reload('roleTable');
                             return;
                         }else{
-                            layer.open({
-                                title : '错误提示', type : 0, content : res.error,
-                            });
+                            layer.msg( res.message );
                         }
                     },'JSON' );
                 } );

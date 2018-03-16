@@ -55,8 +55,8 @@
         <div class="layui-tab-item">
             {{-- privileges --}}
             <div class="layui-form-item">
-                <label class="layui-form-label">权限列表</label>
-                <div class="layui-input-block" style="width:80%;">
+                {{--<label class="layui-form-label">权限列表</label>--}}
+                <div class="layui-input-block" style="">
                     <table class="layui-table">
 
                         <tbody>
@@ -87,6 +87,7 @@
                 @isset( $info->uuid )
                     <input type="hidden"  name="{{ $handle }}[uuid]" value="{{ $info->uuid or '' }}">
                 @endisset
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </div>
         </div>
         {{-- submit --}}
@@ -119,11 +120,7 @@
                  }
                  else
                  {
-                     layer.open({
-                         title : '错误提示',
-                         type : 0,
-                         content : res.error,
-                     });
+                     layer.msg( res.message );
                  }
             }, 'JSON' );
 

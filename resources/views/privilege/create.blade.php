@@ -155,6 +155,7 @@
                 @isset( $info->uuid )
                     <input type="hidden" name="{{ $handle }}[uuid]" value="{{ $info->uuid or '' }}">
                 @endisset
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
             </div>
         </div>
         {{-- submit --}}
@@ -189,11 +190,7 @@
                 }
                 else
                 {
-                    layer.open({
-                        title : '错误提示',
-                        type : 0,
-                        content : res.error,
-                    });
+                    layer.msg( res.message );
                 }
             }, 'JSON' );
 

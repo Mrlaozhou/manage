@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Model\Certificate::class,
         ],
 
         // 'users' => [
@@ -99,4 +99,12 @@ return [
         ],
     ],
 
+
+    'mode'  =>  [
+        '2742AA3D7877690A75751811FF539ECE' =>'LOGIN',
+        '2B23A4409CCB5948224529BC990EA4CF' =>'AUTH',
+        '466A7BA1AC774E736B5DD27426586A6C' =>'TOKEN',
+        '75CF69D4425438727E96BCED7EFBE976' =>'ROOT',
+        '93DD84878E3ABD6F02033CF4406AA3D8' =>'NONE',
+    ],
 ];

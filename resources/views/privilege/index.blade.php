@@ -37,7 +37,7 @@
         table.render({
             elem: '#dataList'
             // ,width:'100%'
-            ,height: 700
+            ,height: 500
             ,url: '{{ route('api.privilege.index') }}' //数据接口
             ,page: true //开启分页
             ,limit: 100
@@ -45,7 +45,7 @@
             ,loading: true
             ,id: 'privilegeTable'
             ,cols: [[ //表头
-                {field: 'name', title: '名称', width:'8%'}
+                {field: 'name', title: '名称', width:'8%', templet: '#name'}
                 ,{field: 'route', title: '路由', width:'12%'}
                 ,{field: 'createdby', title: '创建者', width:'7%'}
                 ,{field: 'createdtime', title: '创建时间',sort:true, width:'11%',templet: '#createdtime'}
@@ -59,6 +59,9 @@
             ]]
             ,done:function (obj) {
                 layer.msg('刷新成功');
+            },
+            where: {
+                _token: _TOKEN
             }
         });
 
@@ -70,15 +73,13 @@
             if( curr == 'del' )
             {
                 layer.confirm( '确定要删除此列吗?',{icon: 3, title:'提示'},function (index) {
-                    $.post( "{{ route('api.privilege.delete') }}", {uuid:data.uuid}, function(res){
+                    $.post( "{{ route('api.privilege.delete') }}", {uuid:data.uuid,_token:_TOKEN}, function(res){
                         if( res.code == 2900 ) {
                             layer.msg('删除成功');
                             table.reload('privilegeTable');
                             return;
                         }else{
-                            layer.open({
-                                title : '错误提示', type : 0, content : res.error,
-                            });
+                            layer.msg( res.message );
                         }
                     },'JSON' );
                 } );
@@ -99,6 +100,10 @@
     } );
 </script>
 
+{{-- name --}}
+<script type="text/html" id="name">
+    @{{ new Array(d.level).join('----')+d.name }}
+</script>
 {{-- issalt --}}
 <script type="text/html" id="issalt">
     @{{#  if(d.issalt == '1'){ }}
