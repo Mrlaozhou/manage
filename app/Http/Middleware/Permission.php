@@ -4,7 +4,8 @@ namespace App\Http\Middleware;
 
 use App\Exceptions\AccessControlException;
 use App\Exceptions\ApiException;
-use App\Handle\Privilege;
+use App\Handle\PrivilegeHandle;
+//use App\Handle\Privilege;
 use Closure;
 use App\Support\Hint;
 use Illuminate\Routing\Route;
@@ -30,11 +31,11 @@ class Permission
         // -- 是否是root
         if( $this->isRoot($request) ) return $next($request);
         // -- 权限分组
-        $groups     =   ArrayObject::groups( Privilege::valid(), 'type' );
+        $groups     =   ArrayObject::groups( PrivilegeHandle::_valid(), 'type' );
         // -- 按照请求类型分发
         $request->isXmlHttpRequest()
-            ?   $this->api( $request, ArrayObject::subItemToKey( ArrayObject::ObjectToArray( $groups['9'] ), 'route' ) )
-            :   $this->web( $request, ArrayObject::subItemToKey( ArrayObject::ObjectToArray( $groups['1'] ), 'route' ) );
+            ?   $this->api( $request, ArrayObject::subItemToKey( ArrayObject::ObjectToArray( $groups['9'] ?? [] ), 'route' ) )
+            :   $this->web( $request, ArrayObject::subItemToKey( ArrayObject::ObjectToArray( $groups['1'] ?? [] ), 'route' ) );
 
         return $next($request);
     }
@@ -76,9 +77,9 @@ class Permission
                 throw new AccessControlException( Hint::tactful(999) );
             case 'AUTH':
                 // 获取当前用户权限列表
-                if( ($uuid=Auth::id()) && ($owner = Privilege::own($uuid)) ){
+                if( ($uuid=Auth::id()) && ($owned = PrivilegeHandle::_userOwned()) ){
                     // 取当前模式下组
-                    $ownMap  =      ArrayObject::subItemToKey( ArrayObject::groups($owner,'type')[$current['type']] ?? [], 'route' ) ;
+                    $ownMap  =      ArrayObject::subItemToKey( ArrayObject::groups($owned,'type')[$current['type']] ?? [], 'route' ) ;
                     // 已授权
                     if( $ownMap[$route] ?? false )  return ;
                 }

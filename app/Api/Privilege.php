@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Api\Base;
 use Validator;
 use DB;
+use App\Handle\PrivilegeHandle as PH;
 class Privilege extends Base
 {
     protected static $rules = [
@@ -62,7 +63,7 @@ class Privilege extends Base
             return is_null($v) ? '' : $v;
         }, $create );
         // ----处理显示方式
-        $create['style'] = self::_stylesHandle( $create['styles'] ?? [] );
+        $create['style'] = PH::stylesHandle( $create['styles'] ?? [] );
         unset($create['styles']);
         // 写库
         $result = DB::table('privilege')->insert($create);
@@ -86,7 +87,7 @@ class Privilege extends Base
             return is_null($v) ? '' : $v;
         }, $update );
         // ----处理显示方式
-        $update['style'] = self::_stylesHandle( $update['styles'] ?? [] );
+        $update['style'] = PH::stylesHandle( $update['styles'] ?? [] );
         unset($update['styles']);
         // 写库
         $uuid = $update['uuid'];
@@ -104,7 +105,7 @@ class Privilege extends Base
         if( Validator::make( ['uuid'=>$uuid], $this->scene('delete') )->fails() )
             throw new ApiException( '数据无效' );
         // -- 权限列表
-        $privileges =   $this->showAll()->toArray();
+        $privileges =   PH::_all()->toArray();
         // -- id集
         $ids        =   array_merge( array_column( Sorts($privileges, true, $uuid) ,'uuid' ), [$uuid]);
         DB::transaction( function () use($ids){

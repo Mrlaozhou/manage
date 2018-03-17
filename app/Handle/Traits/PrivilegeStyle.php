@@ -3,7 +3,7 @@ namespace App\Handle\Traits;
 
 trait PrivilegeStyle
 {
-    protected static $_octalMap = [
+    public static $_octalMap = [
         0     =>  [],
         1     =>  [1],
         2     =>  [2],
@@ -14,18 +14,18 @@ trait PrivilegeStyle
         7     =>  [1,2,4],
     ];
 
-    protected static $_octal = [
+    public static $_octal = [
         1       =>  '侧边显示',
         2       =>  '授权显示',
         4       =>  '父级显示',
     ];
 
-    protected static function _octalMap($oct=7)
+    public static function octalMap($oct=7)
     {
         return self::$_octalMap[$oct] ?? [];
     }
 
-    protected static function _stylesHandle($styles=[])
+    public static function stylesHandle($styles=[])
     {
         if( !$styles )  return 0;
         return array_sum( array_map( function($v){ return (int)$v; }, array_values( $styles ) ) );

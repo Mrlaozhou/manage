@@ -12,7 +12,7 @@ class IndexController extends Controller
     public function index (Request $request)
     {
         // TODO 获取当前用户的权限列表
-        $pris = ( new PrivilegeHandle() )->slider();
+        $pris = PrivilegeHandle::_slider();
         $pris = Trees($pris);
 
         return view('index',[

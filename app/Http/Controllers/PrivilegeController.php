@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Mode;
 use Illuminate\Http\Request;
+use App\Handle\PrivilegeHandle as PH;
 use DB;
 
 class PrivilegeController extends Controller
@@ -24,10 +25,10 @@ class PrivilegeController extends Controller
             ->orderBy('createdtime')
             ->get()->toArray();
         // 权限列表
-        $privileges     =   Sorts( $this->showParent()->toArray(),true);
+        $privileges     =   Sorts( PH::_parent()->toArray(),true);
 
         // 显示列表
-        $styles         =   self::$_octal;
+        $styles         =   PH::$_octal;
 
         return view('privilege.create',[
             'handle'        =>      'create',
@@ -48,14 +49,14 @@ class PrivilegeController extends Controller
             ->orderBy('createdtime')
             ->get()->toArray();
         // 权限列表
-        $privileges     =   Sorts( $this->showParent()->toArray(),true);
+        $privileges     =   Sorts( PH::_parent()->toArray(),true);
         $subItems       =   Sorts($privileges,true,$uuid);
         $subIds         =   array_map(function($v){
             return $v->uuid;
         },$subItems);
         $subIds[]       =   $uuid;
         // 显示列表
-        $styles         =   self::$_octal;
+        $styles         =   PH::$_octal;
 
         return view('privilege.create',[
             'handle'        =>      'update',

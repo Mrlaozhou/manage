@@ -62,13 +62,13 @@
                         <tbody>
                         @foreach( $privileges as $key => $item )
                             <tr>
-                                <td><input type="checkbox" lay-skin="primary" lay-filter="chooseLine" value="{{ $item->uuid }}" name="puuids[]"
+                                <td><input level="{{ $item->level }}" type="checkbox" lay-skin="primary" lay-filter="chooseLine" value="{{ $item->uuid }}" name="puuids[]"
                                            @if( isset($existsPuuids) && in_array( $item->uuid, $existsPuuids ) )
                                                    checked
                                            @endif
                                            title="{{ $item->name }}"></td>
                                 @foreach( $item->son as $k => $v )
-                                    <td><input type="checkbox" lay-skin="primary" value="{{ $v->uuid }}" name="puuids[]"
+                                    <td><input level="{{ $v->level }}" type="checkbox" lay-skin="primary" lay-filter="chooseLine" value="{{ $v->uuid }}" name="puuids[]"
                                                @if( isset($existsPuuids) && in_array( $v->uuid, $existsPuuids ) )
                                                     checked
                                                @endif
@@ -129,15 +129,27 @@
 
         form.on( 'checkbox(chooseLine)', function(data){
             var obj         =   data.othis,
-                status      =   data.elem.checked;
-            if( status == true ) {
-                $(obj).parent().parent().find('input[type="checkbox"]').attr('checked','true');
-                // layui-form-checked
-                $(obj).parent().parent().find('.layui-form-checkbox').addClass('layui-form-checked');
-            }else if( status == false ){
-                $(obj).parent().parent().find('input[type="checkbox"]').attr('checked','false');
-                // layui-form-checked
-                $(obj).parent().parent().find('.layui-form-checkbox').removeClass('layui-form-checked');
+                elem        =   data.elem,
+                level       =   $(elem).attr('level'),
+                status      =   elem.checked,
+                tr          =   $(elem).parent().parent();
+            if ( level == '1' ){
+                // 父级点击处理 layui-form-checked
+                if( status == true ){
+                    tr.find('div').addClass('layui-form-checked');
+                    tr.find('input').attr('checked',true);
+                }else{
+                    tr.find('div').removeClass('layui-form-checked');
+                    tr.find('input').attr('checked',false);
+                }
+            }else{
+                // 子级点击处理
+                if( status == true ){
+                    var pInput      =   tr.find('input[level="1"]'),
+                        pDiv        =   pInput.next('div');
+                    pDiv.addClass('layui-form-checked');
+                    pDiv.attr('checked',true);
+                }
             }
         } );
 

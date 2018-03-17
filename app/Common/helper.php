@@ -1,7 +1,5 @@
 <?php
 
-
-
 if( !function_exists('Trees') )
 {
     /**
@@ -24,7 +22,6 @@ if( !function_exists('Trees') )
         return $trees;
     }
 }
-
 
 if( !function_exists('Sorts') )
 {
@@ -54,7 +51,11 @@ if( !function_exists('Sorts') )
 
 if( !function_exists('dump_sql') )
 {
-    function dump_sql($exec)
+    /**
+     * @ 打印sql
+     * @param Closure $exec
+     */
+    function dump_sql(Closure $exec)
     {
         DB::enableQueryLog();
 

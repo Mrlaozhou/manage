@@ -1,5 +1,6 @@
 <?php
 namespace App\Handle;
+use App\Handle\Traits\CallStaticable;
 use App\Handle\Traits\PrivilegeStyle;
 use App\Handle\Traits\Rootable;
 use App\Handle\Traits\WhereSupport;
@@ -10,13 +11,22 @@ use Illuminate\Support\Traits\Macroable;
 
 class PrivilegeHandle extends ArrayObject
 {
-    use PrivilegeStyle,Rootable,WhereSupport;
+    use PrivilegeStyle,Rootable,WhereSupport,CallStaticable;
 
     public static $defaultFields = [
         'p.uuid','rp.ruuid','ar.auuid','p.name','p.route','p.alias as palias'
-        ,'p.mode','p.pid','p.type as ptype','p.style as pstyle','r.name as rname'
+        ,'p.mode','p.pid','p.type','p.style as pstyle','r.name as rname'
     ];
-    public static $callPrefix = '_';
+    public static $callStaticPrefix = '_';
+
+    /**
+     * @ 所有数据
+     * @return mixed
+     */
+    public function all()
+    {
+        return $this->driver()->get();
+    }
 
     /**
      * @ 当前登录用户的权限列表
@@ -40,7 +50,7 @@ class PrivilegeHandle extends ArrayObject
     }
 
     /**
-     * @ 默认左侧导航全显
+     * @ root左侧导航全显
      * @return mixed
      */
     public function slider ()
@@ -66,8 +76,7 @@ class PrivilegeHandle extends ArrayObject
      */
     public function valid ()
     {
-        $where      =   [ ['p.status','1'], ['r.status','1'], ['a.status','1'] ];
-        return $this->driver( $where );
+        return $this->driver( static::$where['valid-p'] )->get();
     }
 
     /**
@@ -89,14 +98,4 @@ class PrivilegeHandle extends ArrayObject
             ->orderBy($order);
     }
 
-    public function __call($name, $arguments)
-    {
-        // TODO: Implement __call() method.
-    }
-
-    public static function __callStatic($name, $arguments)
-    {
-        // TODO: Implement __callStatic() method.
-        return (new self())->{$name}(...$arguments);
-    }
 }
