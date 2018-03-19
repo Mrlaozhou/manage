@@ -5,6 +5,7 @@ namespace App\Handle;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Auth;
 
 class Privilege
 {
@@ -31,17 +32,31 @@ class Privilege
         return static::drive()->where('status','1')->get();
     }
 
-    public static function own ($uuid='')
+    public static function own ($uuid='',$fields=[])
     {
-        $fields = ['p.name','p.alias','p.route','p.mode','p.type','p.pid'];
+        $fields = $fields ?: ['p.name','p.alias','p.route','p.mode','p.type','p.pid'];
+        $where = ( Auth::id() == $uuid )
+            ?   [['p.status','1'],['r.status','1'],['a.status','1']]
+            :   [['p.status','1'],['r.status','1'],['a.status','1'],['a.uuid',$uuid]];
+
+        return static::join($fields,$where);
+
+    }
+
+    public static function join($fields,$where)
+    {
         return static::drive($fields)
             ->leftjoin('relation2 as rp','rp.puuid','=','p.uuid')
             ->leftjoin('role as r','r.uuid','=','rp.ruuid')
             ->leftjoin('relation1 as ar','ar.ruuid','=','r.uuid')
             ->leftjoin('admin as a','a.uuid','=','ar.auuid')
-            ->where([['p.status','1'],['r.status','1'],['a.status','1'],['a.uuid',$uuid]])
+            ->where($where)
             ->get();
+    }
 
+    public static function slide()
+    {
+        return static::own(Auth::id(),['p.*'])->whereIn('style',[1,3,5,7]);
     }
 
     public static function drive ($fields=[])

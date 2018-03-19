@@ -48,6 +48,7 @@ trait Authorize
         if( !$request->user() || $this->guard()->logout() )
             return ['code'=>4901, 'status'=>false, 'message'=>Hint::tactful(4), 'data'=>'' ];
 
+        session(['_root'=>null]);
         return ['code'=>2900, 'status'=>true, 'message'=>Hint::tactful(3), 'data'=>'' ];
     }
 

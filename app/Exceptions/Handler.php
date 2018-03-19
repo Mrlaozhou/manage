@@ -56,7 +56,7 @@ class Handler extends ExceptionHandler
             if( $request->isXmlHttpRequest() )
                 return response()->json([ 'code'=>4903, 'status'=>false, 'message'=>$exception->getMessage(), 'data'=>'' ]);
 
-            return redirect( $request->user() ? '/' : '/login' );
+            return redirect( $request->user() ? '/default' : '/login' );
         }
         // 接口异常
         if( $exception instanceof ApiException)
