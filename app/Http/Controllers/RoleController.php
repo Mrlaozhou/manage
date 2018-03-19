@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ApiException;
 use Illuminate\Http\Request;
+use App\Handle\PrivilegeHandle as PH;
 use DB;
 class RoleController extends Controller
 {
@@ -16,7 +17,7 @@ class RoleController extends Controller
     public function create (Request $request)
     {
         // TODO 取出权限信息、
-        $privileges = $this->showAuth();
+        $privileges = PH::_authed();
         $privileges = Trees($privileges);
 //        dump($privileges);
         return view('role.create',[
@@ -29,7 +30,7 @@ class RoleController extends Controller
     {
         // TODO 获取权限列表、获取当前角色信息、获取当前角色-权限信息、写库
         // -- 获取权限列表
-        $privileges     =   Trees( $this->showAuth()->toArray() );
+        $privileges     =   Trees( PH::_authed()->toArray() );
         // -- 获取当前角色信息
         if( !$info = DB::table('role')->where('uuid',$uuid)->first() ) throw new ApiException('数据无效');
         // -- 获取当前角色-权限信息

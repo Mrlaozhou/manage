@@ -40,3 +40,6 @@ Route::post('/mode/index','Mode@index')->name('api.mode.index');
 Route::post('/mode/create','Mode@create')->name('api.mode.create');
 Route::post('/mode/delete','Mode@delete')->name('api.mode.delete');
 Route::post('/mode/update','Mode@update')->name('api.mode.update');
+
+// blog
+include_once __DIR__.'/api/blog.php';

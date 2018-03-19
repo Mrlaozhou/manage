@@ -44,6 +44,11 @@ class Certificate extends User
         return $certificate && $this->_loginrecordupdate( $user );
     }
 
+    public function isRoot()
+    {
+        return ( $this->attributes['uuid'] === env('ROOT') );
+    }
+
     private function _loginrecordupdate($user)
     {
         $user->lastlogintime    =   time();

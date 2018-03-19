@@ -13,28 +13,30 @@ trait ValidateScene
      * @ 获取所有自定义验证规则
      * @return mixed
      */
-    protected static function rules()
+    protected static function rules($property)
     {
-        return static::$rules;
+        return static::$$property;
     }
 
     /**
-     * @ 获取当前场景下的验证规则
-     * @param string $scene
-     * @return array
+     * @param string $scene 场景标识
+     * @param string $scenes 场景
+     * @param string $rules 验证规则
+     * @return array|mixed
+     * @throws ApiException
      */
-    protected function scene($scene='*')
+    protected function scene( $scene='*', $scenes='scene', $rules='rules' )
     {
         // TODO 获取当前场景的字段信息、获取字段信息下对应的验证规则
         // 默认所有验证规则
-        if( $scene == '*' ) return static::rules();
+        if( $scene == '*' ) return static::rules($rules);
         // 获取当前场景字段信息
-        $fields = static::scenes()[$scene] ?? false;
+        $fields = static::scenes($scenes)[$scene] ?? false;
         //
         if( $fields === false )
             throw new ApiException("Validate Secne: {$scene} Not Found");
 
-        return  Arr::only( static::rules(), $fields );
+        return  Arr::only( static::rules($rules), $fields );
     }
 
     protected static function achieveRuleWithSecne()
@@ -46,9 +48,9 @@ trait ValidateScene
      * @ 获取所有自定义验证场景
      * @return mixed
      */
-    protected static function scenes()
+    protected static function scenes($property)
     {
-        return static::$scene;
+        return static::$$property;
     }
 
 }

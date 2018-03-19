@@ -16,8 +16,8 @@
                 <div class="layui-input-inline">
                     <select name="{{ $handle }}[pid]" lay-verify="">
                         <option value="">顶级权限</option>
-                        @isset( $privileges )
-                            @foreach( $privileges as $key => $v )
+                        @isset( $parents )
+                            @foreach( $parents as $key => $v )
                                 <option
                                         @isset( $info->pid )
                                                 @if( $info->pid == $v->uuid )
@@ -41,12 +41,12 @@
                            placeholder="请输入名称" autocomplete="off" class="layui-input" value="{{ $info->name or '' }}">
                 </div>
             </div>
-            {{-- route --}}
+            {{-- alias --}}
             <div class="layui-form-item">
-                <label class="layui-form-label">路由</label>
+                <label class="layui-form-label">标识</label>
                 <div class="layui-input-block" style="width:30%;">
-                    <input type="text" name="{{ $handle }}[route]" required  lay-verify="required"
-                           placeholder="请输入路由" autocomplete="off" class="layui-input" value="{{ $info->route or '' }}">
+                    <input type="text" name="{{ $handle }}[sign]" lay-verify=""
+                           placeholder="请输入别名" autocomplete="off" class="layui-input" value="{{ $info->sign or '' }}">
                 </div>
             </div>
             {{-- status --}}
@@ -54,7 +54,7 @@
                 <label class="layui-form-label">状态</label>
                 <div class="layui-input-block">
                     @isset($info->status)
-                        @if( $info->status == '1' )
+                        @if( $info->status == 1 )
                             <input type="radio" name="{{ $handle }}[status]" value="1" title="开启" checked>
                             <input type="radio" name="{{ $handle }}[status]" value="0" title="关闭">
                         @else
@@ -67,87 +67,9 @@
                     @endisset
                 </div>
             </div>
-            {{-- mode --}}
-            <div class="layui-form-item">
-                <label class="layui-form-label">验证模式</label>
-                <div class="layui-input-block">
-                    @if( isset($info->mode) )
-                            @foreach ( $modes as $mode )
-                                <input type="radio" name="{{ $handle }}[mode]" value="{{ $mode->uuid }}" title="{{ $mode->name }}"
-                                        @if( $info->mode == $mode->uuid )
-                                            checked
-                                        @endif
-                                >
-                            @endforeach
-                        @else
-                            @foreach ( $modes as $key => $mode )
-                                <input type="radio" name="{{ $handle }}[mode]" value="{{ $mode->uuid }}" title="{{ $mode->name }}"
-                                       @if( $key == 0 )
-                                       checked
-                                        @endif
-                                >
-                            @endforeach
-                    @endif
-
-                </div>
-            </div>
-            {{-- type --}}
-            <div class="layui-form-item">
-                <label class="layui-form-label">类型</label>
-                <div class="layui-input-block">
-                    @if( isset($info->type) && $info->type == '9' )
-                        <input type="radio" name="{{ $handle }}[type]" value="1" title="web">
-                        <input type="radio" name="{{ $handle }}[type]" value="9" title="api" checked>
-                        @else
-                        <input type="radio" name="{{ $handle }}[type]" value="1" title="web" checked>
-                        <input type="radio" name="{{ $handle }}[type]" value="9" title="api">
-                    @endif
-
-                </div>
-            </div>
-            {{-- style --}}
-            <div class="layui-form-item">
-                <label class="layui-form-label">显示方式</label>
-                <div class="layui-input-block">
-                    @foreach( $_style as $key => $name )
-                        <input type="checkbox" value="{{ $key }}" name="{{ $handle }}[styles]['{{ $key }}']" title="{{ $name }}"
-                            @if( isset($info->styles) )
-                                    @if( in_array($key,$info->styles) )
-                                        checked
-                                    @endif
-                            @else
-                                checked
-                            @endif
-                        >
-                    @endforeach
-                </div>
-            </div>
         </div>
         <div class="layui-tab-item">
-            {{-- alias --}}
-            <div class="layui-form-item">
-                <label class="layui-form-label">别名</label>
-                <div class="layui-input-block" style="width:30%;">
-                    <input type="text" name="{{ $handle }}[alias]" lay-verify=""
-                           placeholder="请输入别名" autocomplete="off" class="layui-input" value="{{ $info->alias or '' }}">
-                </div>
-            </div>
-            {{-- MAC --}}
-            <div class="layui-form-item">
-                <label class="layui-form-label">模块</label>
-                <div class="layui-input-inline" >
-                    <input type="text" name="{{ $handle }}[module]" lay-verify=""
-                           placeholder="请输入模块" autocomplete="off" class="layui-input" value="{{ $info->module or '' }}">
-                </div>
-                <div class="layui-input-inline" >
-                    <input type="text" name="{{ $handle }}[controller]" lay-verify=""
-                           placeholder="请输入控制器" autocomplete="off" class="layui-input" value="{{ $info->controller or '' }}">
-                </div>
-                <div class="layui-input-inline" >
-                    <input type="text" name="{{ $handle }}[action]" lay-verify=""
-                           placeholder="请输入行为" autocomplete="off" class="layui-input" value="{{ $info->action or '' }}">
-                </div>
-            </div>
+
         </div>
         {{-- hidden --}}
         <div class="layui-form-item">
@@ -161,7 +83,7 @@
         {{-- submit --}}
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit api="{{ route('api.privilege.'.$handle) }}" lay-filter="{{ $handle }}">立即提交</button>
+                <button class="layui-btn" lay-submit api="{{ route('api.blog.category.'.$handle) }}" lay-filter="{{ $handle }}">立即提交</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>

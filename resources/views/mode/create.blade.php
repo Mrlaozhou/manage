@@ -80,11 +80,7 @@
                 }
                 else
                 {
-                    layer.open({
-                        title : '错误提示',
-                        type : 0,
-                        content : res.error,
-                    });
+                    layer.msg( res.message );
                 }
             },'json');
             return false;

@@ -80,6 +80,7 @@ class Role extends Base
             $puuidValidator = Validator::make( ['puuid'=>$uuid], $this->scene('relation')  );
             if( $puuidValidator->fails() )  throw new ApiException( '权限uuid出错：'.$uuid );
         endforeach;
+//        dump($puuids);exit;
         // -- 数据填充
         $update['updatedby']    =   self::operatorUUID();
         $update['updatedtime']  =   time();

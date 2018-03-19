@@ -30,4 +30,8 @@
             change to
             return $this->createModel()->validateCredentials( $user, $credentials );
        
-        
+## logs 
+    0316待修复bug:
+        1.privilege统一处理
+        2.api返还字段修复 error->message
+        3.当前用户用权限显示

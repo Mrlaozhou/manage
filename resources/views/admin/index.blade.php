@@ -79,7 +79,7 @@
                             return;
                         }else{
                             layer.open({
-                                title : '错误提示', type : 0, content : res.error,
+                                title : '错误提示', type : 0, content : res.message,
                             });
                         }
                     },'JSON' );

@@ -1,7 +1,5 @@
 <?php
 
-
-
 if( !function_exists('Trees') )
 {
     /**
@@ -25,7 +23,6 @@ if( !function_exists('Trees') )
     }
 }
 
-
 if( !function_exists('Sorts') )
 {
     /**
@@ -42,12 +39,36 @@ if( !function_exists('Sorts') )
         if ($isClear)   $sorts=[];
         foreach ( $object as $key => $item )
         {
-            if ( $item->pid != $pid )   continue;
-            $item->level    =   $level;
-            $sorts[]        =   $item;
-            unset($object[$key]);
-            Sorts( $object, $isClear=false, $item->uuid,$level+1 );
+            if( is_object( $item ) ){
+                if ( $item->pid != $pid )   continue;
+                $item->level    =   $level;
+                $sorts[]        =   $item;
+                unset($object[$key]);
+                Sorts( $object, $isClear=false, $item->uuid,$level+1 );
+            }else{
+                if ( $item['pid'] != $pid )   continue;
+                $item['level']    =   $level;
+                $sorts[]        =   $item;
+                unset($object[$key]);
+                Sorts( $object, $isClear=false, $item['uuid'],$level+1 );
+            }
         }
         return $sorts;
+    }
+}
+
+if( !function_exists('dump_sql') )
+{
+    /**
+     * @ 打印sql
+     * @param Closure $exec
+     */
+    function dump_sql(Closure $exec)
+    {
+        DB::enableQueryLog();
+
+        $exec();
+
+        dump(DB::getQueryLog());
     }
 }

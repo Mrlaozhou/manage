@@ -55,25 +55,26 @@
         <div class="layui-tab-item">
             {{-- privileges --}}
             <div class="layui-form-item">
-                <label class="layui-form-label">权限列表</label>
-                <div class="layui-input-block" style="width:80%;">
+                {{--<label class="layui-form-label">权限列表</label>--}}
+                <div class="layui-input-block" style="">
                     <table class="layui-table">
 
                         <tbody>
                         @foreach( $privileges as $key => $item )
                             <tr>
-                                <td><input type="checkbox" lay-skin="primary" lay-filter="chooseLine" value="{{ $item->uuid }}" name="puuids[]"
+                                <td><input level="{{ $item->level }}" type="checkbox" lay-skin="primary" lay-filter="chooseLine" value="{{ $item->uuid }}" name="puuids[]"
                                            @if( isset($existsPuuids) && in_array( $item->uuid, $existsPuuids ) )
                                                    checked
                                            @endif
-                                           title="{{ $item->name }}"></td>
+                                           title="{{ $item->name }}"> <br>
                                 @foreach( $item->son as $k => $v )
-                                    <td><input type="checkbox" lay-skin="primary" value="{{ $v->uuid }}" name="puuids[]"
+                                   <input level="{{ $v->level }}" type="checkbox" lay-skin="primary" lay-filter="chooseLine" value="{{ $v->uuid }}" name="puuids[]"
                                                @if( isset($existsPuuids) && in_array( $v->uuid, $existsPuuids ) )
                                                     checked
                                                @endif
-                                               title="{{ $v->name }}"></td>
+                                               title="{{ $v->name }}">
                                 @endforeach
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -110,41 +111,47 @@
             var data        =   obj.field,
                 api         =   $(this).attr('api');
             $.post( api, data, function (res) {
-                 if( res.code == 2900 )
-                 {
+                 if( res.code == 2900 ) {
                      // layer.msg('Successfully');
                      var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                      parent.layer.close(index);
                      parent.location.reload();
                      return ;
-                 }
-                 else
-                 {
-                     layer.open({
-                         title : '错误提示',
-                         type : 0,
-                         content : res.error,
-                     });
+                 } else {
+                     layer.msg( res.message );
                  }
             }, 'JSON' );
 
             return false;
         } );
 
+        /*
         form.on( 'checkbox(chooseLine)', function(data){
             var obj         =   data.othis,
-                status      =   data.elem.checked;
-            if( status == true ) {
-                $(obj).parent().parent().find('input[type="checkbox"]').attr('checked','true');
-                // layui-form-checked
-                $(obj).parent().parent().find('.layui-form-checkbox').addClass('layui-form-checked');
-            }else if( status == false ){
-                $(obj).parent().parent().find('input[type="checkbox"]').attr('checked','false');
-                // layui-form-checked
-                $(obj).parent().parent().find('.layui-form-checkbox').removeClass('layui-form-checked');
+                elem        =   data.elem,
+                level       =   $(elem).attr('level'),
+                status      =   elem.checked,
+                tr          =   $(elem).parent().parent();
+            if ( level == '1' ){
+                // 父级点击处理 layui-form-checked
+                if( status == true ){
+                    tr.find('div').addClass('layui-form-checked');
+                    tr.find('input').attr('checked',true);
+                }else{
+                    tr.find('div').removeClass('layui-form-checked');
+                    tr.find('input').attr('checked',false);
+                }
+            }else{
+                // 子级点击处理
+                if( status == true ){
+                    var pInput      =   tr.find('input[level="1"]'),
+                        pDiv        =   pInput.next('div');
+                    pDiv.addClass('layui-form-checked');
+                    pInput.attr('checked',true);
+                }
             }
         } );
-
+        */
         form.render();
     } );
 </script>
