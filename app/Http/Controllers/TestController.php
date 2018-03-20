@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Handle\PrivilegeHandle;
+use App\Model\Blog;
 use function foo\func;
 use Illuminate\Http\Request;
 use App\Support\Unique;
@@ -16,6 +17,9 @@ class TestController extends Controller
     //
     public function index(Request $request)
     {
-        dump( session()->all() );
+        $info = Blog::first();
+        return view('test',[
+            'content'       =>  $info->content
+        ]);
     }
 }

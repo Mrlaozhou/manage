@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50527
 File Encoding         : 65001
 
-Date: 2018-03-19 18:33:18
+Date: 2018-03-20 18:12:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,8 +40,7 @@ CREATE TABLE `main_blog` (
 -- ----------------------------
 -- Records of main_blog
 -- ----------------------------
-INSERT INTO `main_blog` VALUES ('689B646D3086CA89F2793B5D2FAB0B2D', '浅谈php前景', 'PHP 独特的语法混合了C、Java、Perl以及PHP自创的语法。它可以比CGI或者Perl更快速地执行动态网页。用PHP做出的动态页面与其他的编程语言相比，PHP是将程序嵌入到HTML（标准通用标记语言下的一个应用）文档中去执行，执行效率比完全生成HTML标记的CGI要高许多；PHP还可以执行编译后代码，编译可以达到加密和优化代码运行，使代码运行更快。', '', '', '8EDB176FDF444417E3939D70607805E9', '1521454381', '1521454381', '0', '0', '0', '0', '0', '1');
-INSERT INTO `main_blog` VALUES ('E9563B40ED6C9BE1BF595FA82FC52B80', 'php7性能分析', '标量类型声明 有两种模式: 强制 (默认) 和 严格模式。 现在可以使用下列类型参数（无论用强制模式还是严格模式）： 字符串(string), 整数 (int), 浮点数 (float), 以及布尔值 (bool)。它们扩充了PHP5中引入的其他类型：类名，接口，数组和 回调类型。', '', '', '8EDB176FDF444417E3939D70607805E9', '1521455508', '1521455508', '0', '0', '1', '0', '0', '1');
+INSERT INTO `main_blog` VALUES ('9546DEC2FF69CFC35E966D98E2384301', 'php新特性总结', '随着我大php不断的更新调优、衍生出来很多新特性信用法', '', '<p><img src=\"/uploads/editor/image/2018-03-20/ApgamW9ERoaw9PjRe4Z5c8cA2RJZAmJ9PjwMnxN4.jpeg\" title=\"http://www.52laozhou.com\" alt=\"\" width=\"354\" height=\"172\"/></p><ul class=\" list-paddingleft-2\" style=\"list-style-type: disc;\"><li><p>标量类型声明</p></li><li><p>返回值类型声明</p></li><li><p>null合并运算符</p></li><li><p>太空船操作</p></li><li><p>常量数组定于</p></li><li><p>匿名类</p></li><li><p>Unicode Codepoint 转义语法</p></li><li><p>Closure::all()</p></li><li><p>为unserilize提供过滤</p></li><li><p>IntlChar</p></li></ul><pre class=\"brush:php;toolbar:false\">&lt;?php&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\nfunction&nbsp;sumOfInts(int&nbsp;...$ints)\n{\n&nbsp;&nbsp;return&nbsp;array_sum($ints);\n}\nvar_dump(sumOfInts(2,&nbsp;&#39;3&#39;,&nbsp;4.1));</pre><p><br/></p>', '8EDB176FDF444417E3939D70607805E9', '1521536177', '0', '0', '0', '0', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for main_blog_category
@@ -86,5 +85,4 @@ CREATE TABLE `main_blog_category_relation` (
 -- ----------------------------
 -- Records of main_blog_category_relation
 -- ----------------------------
-INSERT INTO `main_blog_category_relation` VALUES ('E9563B40ED6C9BE1BF595FA82FC52B80', 'A04D0131A0467228B4BF7903194A4268');
-INSERT INTO `main_blog_category_relation` VALUES ('E9563B40ED6C9BE1BF595FA82FC52B80', '158E8A463053EB76C72BD26B646B4EB5');
+INSERT INTO `main_blog_category_relation` VALUES ('9546DEC2FF69CFC35E966D98E2384301', 'A04D0131A0467228B4BF7903194A4268');

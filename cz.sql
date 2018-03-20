@@ -7,3 +7,4 @@ left join `manage_admin` as `manage_a` on `manage_a`.`uuid` = `manage_ar`.`auuid
 where (`manage_p`.`status` = '1')
 and `manage_p`.`style` in (4, 5, 6, 7)
 order by `manage_p`.`createdtime` asc
+
