@@ -1,10 +1,14 @@
 <?php
 namespace App\Api\Blog;
 use App\Exceptions\ApiException;
+use App\Model\Blog\Relation;
 use App\Support\Unique;
 use Illuminate\Http\Request;
 use App\Model\Blog\Category as Model;
 use Illuminate\Support\Facades\Validator;
+use App\Model\Blog as BlogModel;
+use App\Model\Blog\Relation as RelationModel;
+use Illuminate\Support\Facades\DB;
 
 trait Category
 {
@@ -19,6 +23,7 @@ trait Category
     protected static $categoryscene = [
         'insert'        =>  ['name','alias','status','pid'],
         'update'        =>  ['uuid','name','alias','status','pid'],
+        'delete'        =>  ['uuid'],
     ];
 
     public function category_index (Request $request)
@@ -73,9 +78,25 @@ trait Category
 
     public function category_delete (Request $request)
     {
-        // 删除
+        // TODO 数据接收、验证、判断、写库（本元素信息、且子元素、关联信息、更改有关blog分类信息）
+        // -- 数据接收
         $uuid       =   $request->get('uuid');
+        // -- 验证
+        $validator  =   Validator::make( ['uuid'=>$uuid], $this->scene('delete','categoryscene','categoryrules')  );
+        // 异常抛出
+        if( $validator->fails() )   throw new ApiException( $validator->errors() );
+        // 验证
+        if( !Model::find($uuid) )   throw new ApiException( '数据无效' );
+        // 子元素主键获取
+        $subIds     =   array_column( Sorts( Model::select(...['uuid','name','pid'])->get()->toArray(),true, $uuid ) ?: [], 'uuid' );
 
-        dump($uuid);
+        DB::transaction( function() use($uuid,$subIds){
+            // 删除主库信息
+            Model::whereIn( 'uuid',array_merge( [$uuid],$subIds ) )->delete();
+            // 删除关联信息
+            RelationModel::whereIn( 'cuuid',array_merge( [$uuid],$subIds ) )->delete();
+        } );
+
+        return [ 'code'=>2900, 'status'=>false, 'message'=>'', 'data'=>'' ];
     }
 }

@@ -33,9 +33,26 @@ class Blog extends Base
 
     ];
 
+    public $allowFields = ['uuid','title','short','cover','createdby','createdtime',
+        'publishedtime','commentnum','clicks','publishedtype','agree','oppose','status'];
+
     public function index ( Request $request )
     {
-        return [ 'code'=>0, 'data'=>Model::get() ];
+        // 数据接收、where拼接、分页处理、数据查询
+        $params     =   $request->only(['page','limit','where']);
+        // where拼接
+        $where      =   [];
+        self::operatorUUID()==env('ROOT') ?: $where[] = ['createdby', self::operatorUUID()];
+        !isset($params['where']) ?: $where[]=$params['where'];
+        // 构造器
+        $builder    =   Model::where( $where );
+        // 数据
+        $data       =   $builder->select(...$this->allowFields)
+            ->forPage( (int)$params['page'],(int)$params['limit'] )->get();
+        // 数量
+        $count      =   $builder->count();
+
+        return [ 'code'=>0, 'data'=>$data, 'count'=>$count ];
     }
 
     public function create (Request $request)

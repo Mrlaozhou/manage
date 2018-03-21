@@ -19,7 +19,7 @@ class TestController extends Controller
     {
         $info = Blog::first();
         return view('test',[
-            'content'       =>  $info->content
+            'info'       =>  $info
         ]);
     }
 }
