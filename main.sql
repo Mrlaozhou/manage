@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50527
 File Encoding         : 65001
 
-Date: 2018-03-20 18:12:52
+Date: 2018-03-21 17:24:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,7 +40,7 @@ CREATE TABLE `main_blog` (
 -- ----------------------------
 -- Records of main_blog
 -- ----------------------------
-INSERT INTO `main_blog` VALUES ('9546DEC2FF69CFC35E966D98E2384301', 'php新特性总结', '随着我大php不断的更新调优、衍生出来很多新特性信用法', '', '<p><img src=\"/uploads/editor/image/2018-03-20/ApgamW9ERoaw9PjRe4Z5c8cA2RJZAmJ9PjwMnxN4.jpeg\" title=\"http://www.52laozhou.com\" alt=\"\" width=\"354\" height=\"172\"/></p><ul class=\" list-paddingleft-2\" style=\"list-style-type: disc;\"><li><p>标量类型声明</p></li><li><p>返回值类型声明</p></li><li><p>null合并运算符</p></li><li><p>太空船操作</p></li><li><p>常量数组定于</p></li><li><p>匿名类</p></li><li><p>Unicode Codepoint 转义语法</p></li><li><p>Closure::all()</p></li><li><p>为unserilize提供过滤</p></li><li><p>IntlChar</p></li></ul><pre class=\"brush:php;toolbar:false\">&lt;?php&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\nfunction&nbsp;sumOfInts(int&nbsp;...$ints)\n{\n&nbsp;&nbsp;return&nbsp;array_sum($ints);\n}\nvar_dump(sumOfInts(2,&nbsp;&#39;3&#39;,&nbsp;4.1));</pre><p><br/></p>', '8EDB176FDF444417E3939D70607805E9', '1521536177', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `main_blog` VALUES ('9546DEC2FF69CFC35E966D98E2384301', 'php新特性总结', '随着我大php不断的更新调优、衍生出来很多新特性信用法', '', '<p></p><hr/><p>1.变量类型约束<br/></p><pre class=\"brush:php;toolbar:false\">&lt;?php&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\nfunction&nbsp;sumOfInts(int&nbsp;...$ints)\n{\n&nbsp;&nbsp;return&nbsp;array_sum($ints);\n}\nvar_dump(sumOfInts(2,&nbsp;&#39;3&#39;,&nbsp;4.1));</pre><p>2.返回值类型声明</p><pre class=\"brush:php;toolbar:false\">&lt;?php&nbsp;\nfunction&nbsp;getArray($data):array\n{\n&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;array_filter($data);\n}</pre><p>2.null合并运算符</p><pre class=\"brush:php;toolbar:false\">&lt;?php\n$name&nbsp;=&nbsp;$_GET[&#39;name&#39;]&nbsp;??&nbsp;&#39;luke&#39;&nbsp;\n//&nbsp;等效\n$name&nbsp;=&nbsp;iset($_GET[&#39;name&#39;])&nbsp;\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?&nbsp;$_GET[&#39;name&#39;]&nbsp;\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&#39;luke&#39;;</pre><p><br/></p>', '8EDB176FDF444417E3939D70607805E9', '1521536177', '1521621750', '32', '155', '0', '81', '6', '1');
 
 -- ----------------------------
 -- Table structure for main_blog_category
@@ -62,14 +62,12 @@ CREATE TABLE `main_blog_category` (
 -- ----------------------------
 -- Records of main_blog_category
 -- ----------------------------
+INSERT INTO `main_blog_category` VALUES ('099C8A278CEF6FDE0E62FE66644D39F8', 'Javascript', 'javascript', '', '1', '8EDB176FDF444417E3939D70607805E9', '1521617976', '', '0');
 INSERT INTO `main_blog_category` VALUES ('0CB1251106781E9729359D42EBCC567D', 'thinkphp5', 'thinkphp5', 'A04D0131A0467228B4BF7903194A4268', '1', '8EDB176FDF444417E3939D70607805E9', '1521438682', '', '0');
-INSERT INTO `main_blog_category` VALUES ('158E8A463053EB76C72BD26B646B4EB5', '算法', 'algorithm', 'B010091D2F07064098B029374A1EBC9A', '1', '8EDB176FDF444417E3939D70607805E9', '1521437927', '8EDB176FDF444417E3939D70607805E9', '1521443781');
 INSERT INTO `main_blog_category` VALUES ('49A313C10581DF1ECB7FE2127EF6C35A', 'laravel', 'laravel', 'A04D0131A0467228B4BF7903194A4268', '1', '8EDB176FDF444417E3939D70607805E9', '1521437910', '8EDB176FDF444417E3939D70607805E9', '1521443741');
-INSERT INTO `main_blog_category` VALUES ('93B7BD14D16AD302C16DA40C36DB6C07', 'Jquery', 'jquery', 'B010091D2F07064098B029374A1EBC9A', '1', '8EDB176FDF444417E3939D70607805E9', '1521443800', '', '0');
-INSERT INTO `main_blog_category` VALUES ('A04D0131A0467228B4BF7903194A4268', 'PHP', 'php', 'B010091D2F07064098B029374A1EBC9A', '1', '8EDB176FDF444417E3939D70607805E9', '1521437046', '8EDB176FDF444417E3939D70607805E9', '1521443307');
-INSERT INTO `main_blog_category` VALUES ('AEBC1924D623A45C6D839C0414A67611', '生活', 'left', '', '1', '8EDB176FDF444417E3939D70607805E9', '1521437949', '8EDB176FDF444417E3939D70607805E9', '1521443367');
-INSERT INTO `main_blog_category` VALUES ('B010091D2F07064098B029374A1EBC9A', '技术相关', 'programme', '', '1', '8EDB176FDF444417E3939D70607805E9', '1521436393', '8EDB176FDF444417E3939D70607805E9', '1521443734');
-INSERT INTO `main_blog_category` VALUES ('CC8AEFC2CB7E948C4CABF636F9A51439', '名吃', 'foot', 'AEBC1924D623A45C6D839C0414A67611', '1', '8EDB176FDF444417E3939D70607805E9', '1521438389', '8EDB176FDF444417E3939D70607805E9', '1521443567');
+INSERT INTO `main_blog_category` VALUES ('A04D0131A0467228B4BF7903194A4268', 'PHP', 'php', '', '1', '8EDB176FDF444417E3939D70607805E9', '1521437046', '8EDB176FDF444417E3939D70607805E9', '1521617902');
+INSERT INTO `main_blog_category` VALUES ('C0C4C6B4E0FE9EA798982B53C7B6989B', '生活', 'left', '', '1', '8EDB176FDF444417E3939D70607805E9', '1521618009', '', '0');
+INSERT INTO `main_blog_category` VALUES ('D9133F6B43A2F855FBCCA3B12BF3C34A', '游戏', 'game', '', '1', '8EDB176FDF444417E3939D70607805E9', '1521617145', '', '0');
 INSERT INTO `main_blog_category` VALUES ('D9E76632B74297B28A1AC0356CF91AE8', '情感', 'emotion', '', '1', '8EDB176FDF444417E3939D70607805E9', '1521438404', '8EDB176FDF444417E3939D70607805E9', '1521443709');
 INSERT INTO `main_blog_category` VALUES ('FC3537E7E5BFEA1A6AF5D4167358EB99', '其他', 'other', '', '1', '8EDB176FDF444417E3939D70607805E9', '1521450564', '', '0');
 
