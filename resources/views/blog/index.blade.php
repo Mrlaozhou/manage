@@ -16,7 +16,7 @@
                 <button class="layui-btn" lay-submit lay-filter="search">搜索</button>
             </div>
             <div class="layui-input-inline x-box-add-btn">
-                <button type="button" class="layui-btn" onclick="openLayer('添加权限','{{ url('blog/create') }}')"><i class="layui-icon">&#xe61f;</i>添加权限</button>
+                <button type="button" class="layui-btn" onclick="openLayer('添加博客','{{ url('blog/create') }}')"><i class="layui-icon">&#xe61f;</i>添加博客</button>
             </div>
         </div>
     </form>

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Handle\PrivilegeHandle;
-use function foo\func;
 use Illuminate\Http\Request;
 use App\Support\Unique;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +15,6 @@ class TestController extends Controller
     //
     public function index(Request $request)
     {
-        dump( session()->all() );
+        dump( $request );
     }
 }
