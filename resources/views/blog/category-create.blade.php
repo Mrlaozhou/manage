@@ -35,7 +35,7 @@
             </div>
             {{-- name --}}
             <div class="layui-form-item">
-                <label class="layui-form-label">权限名称</label>
+                <label class="layui-form-label">分类名称</label>
                 <div class="layui-input-block" style="width:30%;">
                     <input type="text" name="{{ $handle }}[name]" required  lay-verify="required"
                            placeholder="请输入名称" autocomplete="off" class="layui-input" value="{{ $info->name or '' }}">
