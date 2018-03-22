@@ -40,7 +40,7 @@
             ,height: 500
             ,url: '{{ route('api.blog.index') }}' //数据接口
             ,page: true //开启分页
-            ,limit: 100
+            ,limit: 10
             ,method: 'post'
             ,loading: true
             ,id: 'blogTable'
@@ -106,12 +106,10 @@
 </script>
 {{-- status --}}
 <script type="text/html" id="status">
-    @{{#  if(d.status == 2){ }}
+    @{{#  if(d.status == 1){ }}
     <span class="layui-badge layui-bg-green">已发布</span>
-    @{{#  } else if(d.status == 1) { }}
-    <span class="layui-badge layui-bg-red">未发布</span>
     @{{# } else {  }}
-    <span class="layui-badge layui-bg-gray">关闭</span>
+    <span class="layui-badge layui-bg-gray">未发布</span>
     @{{#  } }}
 </script>
 {{-- type --}}

@@ -41,5 +41,7 @@ Route::get('admin/update/{uuid}','AdminController@update');
 
 Route::get('test','TestController@index');
 
+// 文件上传
+include_once __DIR__.'/web/upload.php';
 // 博客
 include_once __DIR__.'/web/blog.php';

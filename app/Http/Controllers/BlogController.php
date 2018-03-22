@@ -43,9 +43,10 @@ class BlogController extends Controller
 
         return view( 'blog.create', [
             'categories'        =>  $categories,
-            'handle'            =>  'create',
+            'handle'            =>  'update',
             'info'              =>  $info,
             'relations'         =>  $relations,
         ] );
+
     }
 }
