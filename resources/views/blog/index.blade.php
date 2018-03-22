@@ -16,7 +16,7 @@
                 <button class="layui-btn" lay-submit lay-filter="search">搜索</button>
             </div>
             <div class="layui-input-inline x-box-add-btn">
-                <button type="button" class="layui-btn" onclick="openLayer('添加博客','{{ url('blog/create') }}')"><i class="layui-icon">&#xe61f;</i>添加博客</button>
+                <button type="button" class="layui-btn" onclick="openLayer('添加文章','{{ url('blog/create') }}')"><i class="layui-icon">&#xe61f;</i>添加文章</button>
             </div>
         </div>
     </form>
@@ -112,14 +112,14 @@
     <span class="layui-badge layui-bg-gray">未发布</span>
     @{{#  } }}
 </script>
-{{-- type --}}
+{{-- publishedtype --}}
 <script type="text/html" id="type">
     @{{#  if(d.publishedtype == 0){ }}
     <span class="layui-badge layui-bg-gray">默认</span>
     @{{#  } else if( d.publishedtype == 1 ) { }}
-    <span class="layui-badge layui-bg-orange">置顶</span>
-    @{{#  } else { }}
     <span class="layui-badge layui-bg-red">推荐</span>
+    @{{#  } else { }}
+    <span class="layui-badge layui-bg-orange">置顶</span>
     @{{#  } }}
 </script>
 <script  type="text/html" id="createdtime">

@@ -54,16 +54,16 @@
                 <div class="layui-input-block">
                     @if( isset($info->publishedtype) && $info->publishedtype == 2 )
                         <input type="radio" name="{{ $handle }}[publishedtype]" value="0" title="默认">
-                        <input type="radio" name="{{ $handle }}[publishedtype]" value="1" title="置顶">
-                        <input type="radio" name="{{ $handle }}[publishedtype]" value="2" title="推荐" checked>
+                        <input type="radio" name="{{ $handle }}[publishedtype]" value="1" title="推荐">
+                        <input type="radio" name="{{ $handle }}[publishedtype]" value="2" title="置顶" checked>
                     @elseif(isset($info->publishedtype) && $info->publishedtype == 1)
                         <input type="radio" name="{{ $handle }}[publishedtype]" value="0" title="默认">
-                        <input type="radio" name="{{ $handle }}[publishedtype]" value="1" title="置顶" checked>
-                        <input type="radio" name="{{ $handle }}[publishedtype]" value="2" title="推荐">
+                        <input type="radio" name="{{ $handle }}[publishedtype]" value="1" title="推荐" checked>
+                        <input type="radio" name="{{ $handle }}[publishedtype]" value="2" title="置顶">
                     @else
                         <input type="radio" name="{{ $handle }}[publishedtype]" value="0" title="默认" checked>
-                        <input type="radio" name="{{ $handle }}[publishedtype]" value="1" title="置顶">
-                        <input type="radio" name="{{ $handle }}[publishedtype]" value="2" title="推荐">
+                        <input type="radio" name="{{ $handle }}[publishedtype]" value="1" title="推荐">
+                        <input type="radio" name="{{ $handle }}[publishedtype]" value="2" title="置顶">
                     @endif
                 </div>
             </div>
