@@ -72,9 +72,9 @@
                 <lable class="layui-form-label label-show">所属分类</lable>
 
                 <div class="layui-input-inline
-                @if( isset($relations) && $relations != [] )
-                        layui-hide
-                @endif
+                {{--@if( isset($relations) && $relations != [] )--}}
+                        {{--layui-hide--}}
+                {{--@endif--}}
                 ">
                     <select name="category[0]" lay-verify="">
                         <option value="">请选择分类</option>
@@ -153,7 +153,7 @@
         form.on( 'submit({{ $handle }})',function (obj) {
             var data        =   obj.field,
                 api         =   $(this).attr('api');
-            console.log(data);
+
             $.post( api, data, function (res) {
                 if( res.code == 2900 ) {
                     // layer.msg('Successfully');
