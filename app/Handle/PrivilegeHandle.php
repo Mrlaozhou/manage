@@ -56,8 +56,8 @@ class PrivilegeHandle extends ArrayObject
     public function slider ()
     {
         $where = array_merge(static::$where['valid-p'], $this->isRoot() ? [] : [['a.uuid',Auth::id()]]);
-        return $this->driver($where)
-            ->whereIn('p.style',[1,3,5,7])->get();
+        return $this->driver($where,['p.uuid','p.route','p.name','p.pid'])
+            ->whereIn('p.style',[1,3,5,7])->groupBy('uuid','route','pid','name')->get();
     }
 
     /**
@@ -95,6 +95,7 @@ class PrivilegeHandle extends ArrayObject
             ->leftjoin( 'relation1 as ar', 'r.uuid', '=', 'ar.ruuid'  )
             ->leftjoin( 'admin as a', 'a.uuid', '=', 'ar.auuid'  )
             ->where($where)
+//            ->groupBy('uuid')
             ->orderBy($order,'desc');
     }
 
